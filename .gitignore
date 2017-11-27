@@ -99,3 +99,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# PycCharm project settings
+.idea/
+
+# Test IO
+input.csv
+output.csv
+output.json
