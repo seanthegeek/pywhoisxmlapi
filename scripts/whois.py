@@ -7,7 +7,7 @@ whois.py - A CLI for WhoisXMLAPI
 
 Usage:
   whois.py balances
-  whois.py [-d | --debug] <domain> [--output=<output_file>]
+  whois.py [-d | --debug] [--verbose] <domain> [--output=<output_file>]
   whois.py bulk [-d | --debug] (<domain>... | --input <input_file>) [--csv] [--output=<output_file>]
   whois.py reverse [-d | --debug] [-y | --yes] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
   whois.py brand [-d | --debug] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back>  --output=<output_file>]
@@ -16,7 +16,7 @@ Usage:
 
 Options:
   -h --help                    Show this screen
-  -d --debug                   Enable debug mode
+  -d --debug                   Enable debug output
   -i --input=<input_file>      A path to a file containing one domain per line
   -o --output=<output_file>    Output to a file with this file name; the file extension is added automatically
   -y --yes                     Confirm action without additional prompts
@@ -24,6 +24,7 @@ Options:
   --days-back=<days_back>      Search back through this number of days (12 maximum)
   --historic                   Include historic results
   --csv                        Output in CSV format instead of JSON
+  --verbose                    Return verbose data
   --version                    Show version
 """
 
@@ -86,7 +87,10 @@ if __name__ == '__main__':
     elif arguments["balances"]:
         results = api.get_account_balances()
     else:
-        results = api.whois(arguments["<domain>"][0])
+        thin_whois = True
+        if arguments["--verbose"]:
+            thin_whois = False
+        results = api.whois(arguments["<domain>"][0], thin_whois=thin_whois)
     if arguments["--output"]:
         if arguments["--csv"]:
             filename = "{0}.csv".format(arguments["--output"])
