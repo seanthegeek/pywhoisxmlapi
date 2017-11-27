@@ -92,6 +92,9 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['requests', 'docopt'],
+
+    # Install whois.py in the system PATH
+    scripts=['scripts/whois.py', 'scripts/whois.py'],
 )
 
 
