@@ -26,7 +26,7 @@ description = "A unofficial client for WhoisXMLAPI"
 
 
 setup(
-    name='pyopenstates',
+    name='pywhoisxmlapi',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
