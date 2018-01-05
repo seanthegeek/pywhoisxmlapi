@@ -15,13 +15,14 @@ from setuptools import setup
 from codecs import open
 from os import path
 
+from pywhoisxmlapi import __version__
+
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-__version__ = "1.0.0"
 description = "A unofficial client for WhoisXMLAPI"
 
 

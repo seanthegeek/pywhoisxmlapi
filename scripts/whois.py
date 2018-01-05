@@ -35,7 +35,7 @@ import json
 
 from docopt import docopt
 
-from pywhoisxmlapi import WhoisXMLAPI
+from pywhoisxmlapi import __version__, WhoisXMLAPI
 
 
 """Copyright 2017 Sean Whalen
@@ -52,8 +52,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-
-__version__ = "0.5.0"
 
 if __name__ == '__main__':
     logger = logging.getLogger()
@@ -79,10 +77,11 @@ if __name__ == '__main__':
             search_type = "historic"
         if arguments["--yes"]:
             mode = "purchase"
-        results = api.reverse_whois(arguments["<term>"], exclude_terms=arguments["--exclude"], search_type=search_type,
+        results = api.reverse_whois(arguments["<term>"], exclude_terms=arguments["<exclude_term>"],
+                                    search_type=search_type,
                                     mode=mode)
     elif arguments["brand"]:
-        results = api.brand_alert(arguments["<term>"], exclude_terms=arguments["--exclude"],
+        results = api.brand_alert(arguments["<term>"], exclude_terms=arguments["<exclude_term>"],
                                   since_date=arguments["--since"], days_back=arguments["--days-back"])
     elif arguments["balances"]:
         results = api.get_account_balances()
