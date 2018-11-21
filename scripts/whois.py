@@ -9,7 +9,7 @@ Usage:
   whois.py balances
   whois.py [-d | --debug] [--verbose] <domain> [--output=<output_file>]
   whois.py bulk [-d | --debug] (<domain>... | --input <input_file>) [--csv] [--output=<output_file>]
-  whois.py reverse [-d | --debug] [-y | --yes] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
+  whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
   whois.py brand [-d | --debug] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back>  --output=<output_file>]
   whois.py -h | --help
   whois.py --version
@@ -19,7 +19,7 @@ Options:
   -d --debug                   Enable debug output
   -i --input=<input_file>      A path to a file containing one domain per line
   -o --output=<output_file>    Output to a file with this file name; the file extension is added automatically
-  -y --yes                     Confirm action without additional prompts
+  -p --purchase                Purchase the results with a Domain Research Suite (DRS) credit
   --since=<since>              Only include results since this date YYY-MM0DD format
   --days-back=<days_back>      Search back through this number of days (12 maximum)
   --historic                   Include historic results
@@ -75,7 +75,7 @@ if __name__ == '__main__':
         mode = "preview"
         if arguments["--historic"]:
             search_type = "historic"
-        if arguments["--yes"]:
+        if arguments["--purchase"]:
             mode = "purchase"
         results = api.reverse_whois(arguments["<term>"], exclude_terms=arguments["<exclude_term>"],
                                     search_type=search_type,
@@ -91,12 +91,11 @@ if __name__ == '__main__':
             thin_whois = False
         results = api.whois(arguments["<domain>"][0], thin_whois=thin_whois)
     if arguments["--output"]:
-        if arguments["--csv"]:
-            filename = "{0}.csv".format(arguments["--output"])
-        else:
-            filename = "{0}.json".format(arguments["--output"])
+        filename = arguments["--output"]
         with open(filename, "wb") as output_file:
-            if arguments["--csv"]:
+            if arguments["reverse"] and arguments["--purchase"]:
+                output_file.write("\n".join(results["domains"]).encode("utf-8"))
+            elif arguments["--csv"]:
                 output_file.write(results.encode("utf-8"))
             else:
                 output_file.write(json.dumps(results, indent=2, ensure_ascii=False).encode("utf-8"))

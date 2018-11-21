@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -104,6 +105,4 @@ ENV/
 .idea/
 
 # Test IO
-input.csv
-output.csv
-output.json
+output/

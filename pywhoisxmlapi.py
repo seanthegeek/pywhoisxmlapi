@@ -64,38 +64,29 @@ class WhoisXMLAPI(object):
     """
     _root = "https://www.whoisxmlapi.com"
 
-    def __init__(self, username=None, password=None, api_key=None, secret=None, email_key=None):
+    def __init__(self, api_key=None):
         """
         Configures the API client
         
         Args:
-            username (str): WhoisXMLAPI username; overridden by the ``WHOIS_USERNAME`` environment variable 
-            password (str): WhoisXMLAPI password; overridden by the ``WHOIS_PASSWORD`` environment variable 
-            api_key (str): WhoisXMLAPI key; overridden by the ``WHOIS_KEY`` environment variable 
-            secret (str): WhoisXMLAPI key secret; overridden by the ``WHOIS_SECRET`` environment variable
-            email_key (str): API key for the WhoisXMLAPI email verification API;; overridden by the
-            ``WHOIS_EMAIL_KEY`` environment variable 
+            api_key (str): WhoisXMLAPI API key; overridden by the ``WHOIS_KEY`` environment variable
             
         Warning:
             Currently, only a few WHOISXMLAPI actions support API keys.
-            For now, you must yse username/password authentication instead to use the full API.  
+            For now, you must use username/password authentication instead to use the full API.
         """
-        if "WHOIS_USERNAME" in os.environ:
-            username = os.environ["WHOIS_USERNAME"]
-        if "WHOIS_PASSWORD" in os.environ:
-            password = os.environ["WHOIS_PASSWORD"]
         if "WHOIS_KEY" in os.environ:
             api_key = os.environ["WHOIS_KEY"]
-        if "WHOIS_SECRET" in os.environ:
-            secret = os.environ["WHOIS_SECRET"]
         if "WHOIS_EMAIL_KEY" in os.environ:
             email_key = os.environ["WHOIS_EMAIL_KEY"]
 
-        self._username = username
-        self._password = password
+        if "WHOIS_KEY" in os.environ:
+            api_key = os.environ["WHOIS_KEY"]
+        if api_key is None:
+            raise ValueError(
+                "API key must provided as the api_key parameter, or the WHOIS_API_KEY environment variable")
+
         self._api_key = api_key
-        self._secret = secret
-        self._email_key = email_key
         self._session = session()
         self._session.headers.update({"User-Agent": "pywhoisxmlapi/{0}".format(__version__)})
 
@@ -106,33 +97,21 @@ class WhoisXMLAPI(object):
         Args:
             endpoint: The API endpoint to request
             params: The parameters to pass
-            post (bool): If True make a ``POST`` request instead of ``GET`` 
+            post (bool): If True make a ``POST`` request instead of ``GET``
 
         Returns:
             dict: The API call results
         """
-        api_key_missing_secret = self._api_key and self._secret is None
-        no_password_or_api_key = self._api_key is None and self._password is None
-
-        if self._username is None or api_key_missing_secret or no_password_or_api_key:
-            raise ValueError("You must provide either an API key and secret, or a username and password")
-
         if params is None:
             params = dict()
         params["outputFormat"] = "json"
-        if self._username and self._api_key is None:
-            params["username"] = self._username
-        if self._password:
-            params["password"] = self._password
-        if self._api_key:
-            _time = int(round(time.time() * 1000))
-            req = base64.b64encode(json.dumps(dict(t=str(_time), u=self._username)).encode("ascii"))
-            msg = "{0}{1}{2}".format(self._username, str(_time), self._api_key).encode("ascii")
-            digest = hmac.new(self._secret.encode("ascii"), msg, hashlib.md5).hexdigest()
-            params["requestObject"] = req
-            params["digest"] = digest
+        params["apiKey"] = self._api_key
 
-        url = "{0}/{1}".format(WhoisXMLAPI._root, endpoint.lstrip("/"))
+        if endpoint.lower().startswith("http"):
+            url = endpoint
+        else:
+            url = "{0}/{1}".format(WhoisXMLAPI._root, endpoint)
+        url.lstrip("/")
         logging.debug("Params: {0}".format(params))
         if post:
             response = self._session.post(url, json=params)
@@ -143,10 +122,7 @@ class WhoisXMLAPI(object):
         redacted_url = response.url
         if "callback" in params.keys() and params["callback"]:
             parse_json = False
-        if self._username:
-            redacted_url = redacted_url.replace(quote(self._username.encode("utf-8")), "REDACTED")
-        if self._password:
-            redacted_url = redacted_url.replace(quote(self._password.encode("utf-8")), "REDACTED")
+            redacted_url = redacted_url.replace(quote(self._api_key.encode("utf-8")), "REDACTED")
         if parse_json:
             response = response.json()
             if "ErrorMessage" in response:
@@ -209,7 +185,8 @@ class WhoisXMLAPI(object):
         
         Args:
             domain_name (str): A domain name or IP address
-            da (int): 0 - Do not check for domain amiability; 1 - quick check; 2   
+            prefer_fresh (bool): Get the latest WHOIS record even if it's incomplete
+            da (int): 0 - Do not check for domain amiability; 1 - quick check; 2  - slower, but most accurate
             ip (bool): Resolve IP addresses
             check_proxy_data (bool):  Check if registration matches known proxies
             thin_whois (bool):  Only return data on the registrant, not the registrar                                                                                                                                                
@@ -293,7 +270,10 @@ class WhoisXMLAPI(object):
 
         return dict(structured=structured, csv=csv)
 
-    def reverse_whois(self, terms, exclude_terms=None, search_type="current", mode="preview", since_date=None):
+    def reverse_whois(self, terms, exclude_terms=None, search_type="current", mode="preview",
+                      created_date_to=None, created_date_from=None,
+                      updated_date_to=None, updated_date_from=None,
+                      expired_date_to=None, expired_date_from=None):
         """
         Conducts a reverse WHOIS search
         
@@ -302,48 +282,56 @@ class WhoisXMLAPI(object):
             exclude_terms (list): Terms to filter by 
             search_type (str): current or historic 
             mode (str): preview or purchase
-            since_date (str): Only return results for domains created/discovered after this date (``YYYY-MM-DD`` format)
+            created_date_to (str): Search through domains created before the given date (``YYYY-MM-DD`` format)
+            created_date_from (str): Search through domains created after the given date (``YYYY-MM-DD`` format)
+            updated_date_to (str): Search through domains created before the given date (``YYYY-MM-DD`` format)
+            updated_date_from (str): Search through domains created after the given date (``YYYY-MM-DD`` format)
+            expired_date_to (str): Search through domains created before the given date (``YYYY-MM-DD`` format)
+            expired_date_from (str): Search through domains created after the given date (``YYYY-MM-DD`` format)
 
         Returns:
             dict: A dictionary of preview data
             list: A list of results
         """
-        endpoint = "/reverse-whois-api/search.php"
-        params = dict(search_type=search_type.lower(), mode=mode.lower(), since_date=since_date)
-        results = dict()
+        endpoint = "https://reverse-whois-api.whoisxmlapi.com/api/v2"
+        params = dict(search_type=search_type.lower(), mode=mode.lower())
+        if created_date_to:
+            params["createdDateTo"] = created_date_to
+        if created_date_from:
+            params["createdDateFrom"] = created_date_from
+        if updated_date_from:
+            params["updatedDateFrom"] = updated_date_from
+        if updated_date_to:
+            params["updatedDateTo"] = updated_date_to
+        if expired_date_from:
+            params["expiredDateFrom"] = expired_date_from
+        if expired_date_to:
+            params["expiredDateTo"] = expired_date_to
 
         if exclude_terms is None:
             exclude_terms = []
-        if len(terms) > 4:
-            raise ValueError("Number of terms cannot be greater than 4")
-        if len(exclude_terms) > 4:
-            raise ValueError("Number of excluded terms cannot be greater than 4")
         if search_type.lower() not in ["current", "historic"]:
             raise ValueError("Search type must be current or historic")
         if mode.lower() not in ["preview", "purchase"]:
             raise ValueError("mode must be preview or purchase")
-        for i in range(len(terms)):
-            param_name = "term{0}".format(i + 1)
-            params[param_name] = terms[i]
-        for i in range(len(exclude_terms)):
-            param_name = "exclude_term{0}".format(i + 1)
-            params[param_name] = terms[i]
 
-        balance = self.get_account_balances()["reverse_whois_balance"]
+        params["basicSearchTerms"] = dict(include=terms, exclude=exclude_terms)
+
+        balance = None
+        #balance = self.get_account_balances()["reverse_whois_balance"]
         if balance is None:
             balance = 0
 
-        response = self._request(endpoint, params)
-        number_of_domains = response["stats"]["total_count"]
-        credit_cost = number_of_domains / 10000
-        if number_of_domains % 10000 != 0:
-            credit_cost += 1
+        response = self._request(endpoint, params, post=True)
+        results = dict()
+        number_of_domains = response["domainsCount"]
+        credit_cost = 1
 
         results["number_of_domains"] = number_of_domains
         results["credit_cost"] = int(credit_cost)
         results["credit_balance"] = balance
-        if "domains" in response:
-            results["domains"] = response["domains"]
+        if "domainsList" in response:
+            results["domains"] = response["domainsList"]
 
         return results
 
@@ -459,11 +447,9 @@ class WhoisXMLAPI(object):
         Returns:
             dict: email verification results
         """
-        if self._email_key is None:
-            raise ValueError("Email verification API key is not set")
 
         url = "https://emailverification.whoisxmlapi.com/api/v1"
-        params = dict(apiKey=self._email_key, emailAddress=email_address, format="JSON")
+        params = dict(apiKey=self._api_key, emailAddress=email_address, format="JSON")
         response = self._session.get(url, params=params)
         response.raise_for_status()
 
