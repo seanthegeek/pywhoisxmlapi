@@ -350,14 +350,14 @@ class WhoisXMLAPI(object):
 
         results["number_of_domains"] = number_of_domains
         results["credit_cost"] = int(credit_cost)
-        results["credit_balance"] = balance
+        # results["credit_balance"] = balance
         if "domainsList" in response:
             results["domains"] = response["domainsList"]
 
         return results
 
     def brand_alert(self, terms, exclude_terms=None, since_date=None,
-                    days_back=None):
+                    mode="preview"):
         """
         Lists newly created or deleted domains based on brand terms
         
@@ -366,31 +366,25 @@ class WhoisXMLAPI(object):
             exclude_terms (list): Terms to exclude 
             since_date (str): Only return domains created or deleted since this
             date, in YYYY-MM-DD format
-            days_back (int): The number of days back to search (12 maximum) 
+            Allowed dates are in the [Today minus 14 days — Today] interval.
+            Yesterday's date by default.
+            mode (str): ``preview`` or ``purchase``
 
         Returns:
             list: A list of dictionaries containing the domain, and its
             status (i.e. new or deleted)
         """
-        endpoint = "/brand-alert-api/search.php"
-        params = dict(since_date=since_date, days_back=days_back)
-        if exclude_terms is None:
-            exclude_terms = []
-        if len(terms) > 4:
-            raise ValueError("Number of terms cannot be greater than 4")
-        if len(exclude_terms) > 4:
-            raise ValueError(
-                "Number of excluded terms cannot be greater than 4")
-        if days_back and days_back > 12:
-            raise ValueError("days_back cannot be greater than 12")
-        for i in range(len(terms)):
-            param_name = "term{0}".format(i + 1)
-            params[param_name] = terms[i]
-        for i in range(len(exclude_terms)):
-            param_name = "exclude_term{0}".format(i + 1)
-            params[param_name] = terms[i]
+        endpoint = "https://brand-alert-api.whoisxmlapi.com/api/v2"
+        params = dict(apiKey=self._api_key, includeSearchTerms=terms,
+                      mode=mode)
+        if mode.lower() not in ["preview", "purchase"]:
+            raise ValueError("mode must be preview or purchase")
+        if exclude_terms:
+            params["excludeTerms"] = exclude_terms
+        if since_date:
+            params["sinceDate"] = since_date
 
-        return self._request(endpoint, params)["alerts"]
+        return self._request(endpoint, params)
 
     def registrant_alert(self, terms, exclude_terms=None, since_date=None,
                          days_back=None):
@@ -409,6 +403,7 @@ class WhoisXMLAPI(object):
             status (i.e. new or deleted)
         """
         endpoint = "/registrant-alert-api/search.php"
+        cost = 10
         params = dict(since_date=since_date, days_back=days_back)
         if exclude_terms is None:
             exclude_terms = []
