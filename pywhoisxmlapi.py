@@ -6,6 +6,7 @@ import os
 import time
 import datetime
 import logging
+from datetime import datetime
 
 from requests import session
 from requests.utils import quote
@@ -330,9 +331,11 @@ class WhoisXMLAPI(object):
 
         if exclude_terms is None:
             exclude_terms = []
-        if search_type.lower() not in ["current", "historic"]:
+        search_type = search_type.lower()
+        mode = mode.lower()
+        if search_type not in ["current", "historic"]:
             raise ValueError("Search type must be current or historic")
-        if mode.lower() not in ["preview", "purchase"]:
+        if mode not in ["preview", "purchase"]:
             raise ValueError("mode must be preview or purchase")
 
         params["basicSearchTerms"] = dict(include=terms,
@@ -343,16 +346,13 @@ class WhoisXMLAPI(object):
         if balance is None:
             balance = 0
 
-        response = self._request(endpoint, params, post=True)
-        results = dict()
-        number_of_domains = response["domainsCount"]
-        credit_cost = 1
+        results = self._request(endpoint, params, post=True)
+        drs_credit_cost = 1
 
-        results["number_of_domains"] = number_of_domains
-        results["credit_cost"] = int(credit_cost)
-        # results["credit_balance"] = balance
-        if "domainsList" in response:
-            results["domains"] = response["domainsList"]
+        if mode == "preview":
+            results["DRSCreditCost"] = drs_credit_cost
+        elif "domainslist" in results:
+            results = results["domainsList"]
 
         return results
 
@@ -362,8 +362,8 @@ class WhoisXMLAPI(object):
         Lists newly created or deleted domains based on brand terms
         
         Args:
-            terms (list): Brand terms to include in the search
-            exclude_terms (list): Terms to exclude 
+            terms (list): Brand terms to include in the search (max 4)
+            exclude_terms (list): Terms to exclude (max 4)
             since_date (str): Only return domains created or deleted since this
             date, in YYYY-MM-DD format
             Allowed dates are in the [Today minus 14 days — Today] interval.
@@ -377,14 +377,26 @@ class WhoisXMLAPI(object):
         endpoint = "https://brand-alert-api.whoisxmlapi.com/api/v2"
         params = dict(apiKey=self._api_key, includeSearchTerms=terms,
                       mode=mode)
-        if mode.lower() not in ["preview", "purchase"]:
+        if exclude_terms is None:
+            exclude_terms = []
+        if len(terms) > 4:
+            raise ValueError("Number of terms cannot be greater than 4")
+        if len(exclude_terms) > 4:
+            raise ValueError(
+                "Number of excluded terms cannot be greater than 4")
+        mode = mode.lower()
+        if mode not in ["preview", "purchase"]:
             raise ValueError("mode must be preview or purchase")
-        if exclude_terms:
-            params["excludeTerms"] = exclude_terms
+        params["excludeTerms"] = exclude_terms
         if since_date:
             params["sinceDate"] = since_date
 
-        return self._request(endpoint, params)
+        results = self._request(endpoint, params, post=True)
+
+        if "domainslist" in results:
+            results = results["domainsList"]
+
+        return results
 
     def registrant_alert(self, terms, exclude_terms=None, since_date=None,
                          days_back=None):
@@ -483,3 +495,40 @@ class WhoisXMLAPI(object):
         response.raise_for_status()
 
         return response.json()
+
+    def reverse_mx(self, mx):
+        """
+        Performs a reverse MX query
+
+        Args:
+            mx (str): The email address to verify
+
+        Returns:
+            list: A list of results
+        """
+        def transform(result):
+            result["first_seen"] = epoch_to_datetime(
+                result["first_seen"]).isotime()
+            result["last_visited"] = epoch_to_datetime(
+                result["last_visited"]).isotime()
+        url = "https://reverse-mx-api.whoisxmlapi.com/api/v1"
+        results = []
+        params = dict(apiKey=self._api_key, mx=mx,
+                      format="JSON")
+        response = self._session.get(url, params=params)
+        response.raise_for_status()
+
+        _results = response.json()["result"]
+        results += _results
+        while len(_results) >= 300:
+            params["from"] = results[-1]["name"]
+            response = self._session.get(url, params=params)
+            response.raise_for_status()
+
+            _results = response.json()["result"]
+
+            results += _results
+
+        results = list(map(transform, results))
+
+        return results
