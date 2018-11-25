@@ -45,7 +45,7 @@ def epoch_to_datetime(epoch):
 
     """
     epoch_seconds = int(epoch) / 1000.0
-    return datetime.datetime.fromtimestamp(epoch_seconds).strftime(
+    return datetime.fromtimestamp(epoch_seconds).strftime(
         '%Y-%m-%d %H:%M:%S.%f')
 
 
@@ -508,9 +508,10 @@ class WhoisXMLAPI(object):
         """
         def transform(result):
             result["first_seen"] = epoch_to_datetime(
-                result["first_seen"]).isotime()
-            result["last_visited"] = epoch_to_datetime(
-                result["last_visited"]).isotime()
+                result["first_seen"])
+            result["last_visit"] = epoch_to_datetime(
+                result["last_visit"])
+            return result
         url = "https://reverse-mx-api.whoisxmlapi.com/api/v1"
         results = []
         params = dict(apiKey=self._api_key, mx=mx,
