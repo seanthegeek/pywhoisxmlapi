@@ -12,7 +12,7 @@ from requests import session
 from requests.utils import quote
 
 
-"""Copyright 2017 Sean Whalen
+"""Copyright 2018 Sean Whalen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -113,24 +113,25 @@ class WhoisXMLAPI(object):
         if params is None:
             params = dict()
         params["outputFormat"] = "json"
+        params["format"] = "JSON"
         params["apiKey"] = self._api_key
 
         if endpoint.lower().startswith("http"):
-            url = endpoint
+            endpoint = endpoint
         else:
-            url = "{0}/{1}".format(WhoisXMLAPI._root, endpoint)
-        url.lstrip("/")
+            endpoint = "{0}/{1}".format(WhoisXMLAPI._root, endpoint)
+        endpoint.lstrip("/")
         logging.debug("Params: {0}".format(params))
         if post:
-            response = self._session.post(url, json=params)
+            response = self._session.post(endpoint, json=params)
         else:
-            response = self._session.get(url, params=params)
+            response = self._session.get(endpoint, params=params)
         logging.debug("Response {0}".format(response.content))
         response.raise_for_status()
-        redacted_url = response.url
+        redacted_endpoint = response.endpoint
         if "callback" in params.keys() and params["callback"]:
             parse_json = False
-            redacted_url = redacted_url.replace(
+            redacted_endpoint = redacted_endpoint.replace(
                 quote(self._api_key.encode("utf-8")), "REDACTED")
         if parse_json:
             response = response.json()
@@ -138,7 +139,7 @@ class WhoisXMLAPI(object):
                 error = response["ErrorMessage"]
                 raise WhoisXMLAPIError(
                     "{0}\nAttempted query: {1}".format(error["msg"],
-                                                       redacted_url))
+                                                       redacted_endpoint))
         else:
             response = response.text
 
@@ -285,11 +286,11 @@ class WhoisXMLAPI(object):
             result["domainFetchedTime"] = epoch_to_datetime(
                 result["domainFetchedTime"])
 
-        url = "https://www.whoisxmlapi.com/BulkWhoisLookup/bulkServices" \
-              "/download"
+        endpoint = "https://www.whoisxmlapi.com/BulkWhoisLookup/" \
+                   "bulkServices/download"
         csv = ""
         time.sleep(15)
-        response = self._session.post(url, json=params).text
+        response = self._session.post(endpoint, json=params).text
         for line in response.split("\n"):
             # remove blank lines
             if line != '':
@@ -346,6 +347,11 @@ class WhoisXMLAPI(object):
             exclude_terms = []
         search_type = search_type.lower()
         mode = mode.lower()
+        if len(terms) > 4:
+            raise ValueError("Number of terms cannot be greater than 4")
+        if len(exclude_terms) > 4:
+            raise ValueError(
+                "Number of excluded terms cannot be greater than 4")
         if search_type not in ["current", "historic"]:
             raise ValueError("Search type must be current or historic")
         if mode not in ["preview", "purchase"]:
@@ -369,6 +375,71 @@ class WhoisXMLAPI(object):
 
         return results
 
+    def whois_history(self, domain,
+                      since_date=None,
+                      created_date_from=None,
+                      created_date_to=None,
+                      updated_date_from=None,
+                      updated_date_to=None,
+                      expired_date_from=None,
+                      expired_date_to=None,
+                      mode="preview"):
+        """
+        Returns WHOIS history for a given domains
+
+        Args:
+            domain (str): The domain
+            since_date (str): Only return domains created or deleted since
+            this date, (``YYYY-MM-DD`` format)
+            created_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            created_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            mode (str): ``preview`` or ``purchase``
+
+        Returns:
+            dict: A dictionary of preview data
+            list: A list of parsed historic WHOIS records, starting with the
+            current record
+
+        """
+
+        endpoint = "https://whois-history-api.whoisxmlapi.com/api/v1"
+        mode = mode.lower()
+        params = dict(domainName=domain, mode=mode)
+        if since_date:
+            params["sinceDate"] = since_date
+        if created_date_from:
+            params["createdDateFrom"] = created_date_from
+        if created_date_to:
+            params["createdDateTo"] = created_date_to
+        if updated_date_from:
+            params["updatedDateFrom"] = updated_date_from
+        if updated_date_to:
+            params["updatedDateTo"] = updated_date_to
+        if expired_date_from:
+            params["expiredDateFrom"] = expired_date_from
+        if expired_date_to:
+            params["expiredDateTo"] = expired_date_to
+
+        results = self._request(endpoint, params, post=True)
+        drs_credit_cost = 50
+
+        if mode == "preview":
+            results["DRSCreditCost"] = drs_credit_cost
+        elif "records" in results:
+            results = results["records"]
+
+        return results
+
     def brand_alert(self, terms, exclude_terms=None, since_date=None,
                     mode="preview"):
         """
@@ -384,8 +455,9 @@ class WhoisXMLAPI(object):
             mode (str): ``preview`` or ``purchase``
 
         Returns:
-            list: A list of dictionaries containing the domain, and its
-            status (i.e. new or deleted)
+            dict: A dictionary of preview data
+            list: A list of dictionaries containing the ``domainName``,
+            and its ``action`` (i.e. ``added`` or ``dropped``)
         """
         endpoint = "https://brand-alert-api.whoisxmlapi.com/api/v2"
         params = dict(apiKey=self._api_key, includeSearchTerms=terms,
@@ -406,30 +478,52 @@ class WhoisXMLAPI(object):
 
         results = self._request(endpoint, params, post=True)
 
-        if "domainslist" in results:
+        drs_credit_cost = 10
+
+        if mode == "preview":
+            results["DRSCreditCost"] = drs_credit_cost
+        elif "domainslist" in results:
             results = results["domainsList"]
 
         return results
 
-    def registrant_alert(self, terms, exclude_terms=None, since_date=None,
-                         days_back=None):
+    def registrant_alert(self, terms, exclude_terms=None,
+                         since_date=None,
+                         created_date_from=None,
+                         created_date_to=None,
+                         updated_date_from=None,
+                         updated_date_to=None,
+                         expired_date_from=None,
+                         expired_date_to=None,
+                         mode="preview"):
         """
-        Lists newly created or deleted domains based on registrant terms
+        Lists newly created or deleted domains based on registrant
 
         Args:
-            terms (list): Registrant terms to include in the search
-            exclude_terms (list): Terms to exclude 
+            terms (list): Brand terms to include in the search (max 4)
+            exclude_terms (list): Terms to exclude (max 4)
             since_date (str): Only return domains created or deleted since
-            this date, in YYYY-MM-DD format
-            days_back (int): The number of days back to search (12 maximum) 
+            this date, (``YYYY-MM-DD`` format)
+            created_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            created_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            mode (str): ``preview`` or ``purchase``
 
         Returns:
-            list: A list of dictionaries containing the domain, and its
-            status (i.e. new or deleted)
+            dict: A dictionary of preview data
+            list: A list of dictionaries containing the ``domainName``,
+            and its ``action`` (i.e. ``added`` or ``dropped``)
         """
-        endpoint = "/registrant-alert-api/search.php"
-        cost = 10
-        params = dict(since_date=since_date, days_back=days_back)
+        endpoint = "https://brand-alert-api.whoisxmlapi.com/api/v2"
         if exclude_terms is None:
             exclude_terms = []
         if len(terms) > 4:
@@ -437,16 +531,37 @@ class WhoisXMLAPI(object):
         if len(exclude_terms) > 4:
             raise ValueError(
                 "Number of excluded terms cannot be greater than 4")
-        if days_back and days_back > 12:
-            raise ValueError("days_back cannot be greater than 12")
-        for i in range(len(terms)):
-            param_name = "term{0}".format(i + 1)
-            params[param_name] = terms[i]
-        for i in range(len(exclude_terms)):
-            param_name = "exclude_term{0}".format(i + 1)
-            params[param_name] = terms[i]
+        mode = mode.lower()
+        params = dict(mode=mode)
+        if mode not in ["preview", "purchase"]:
+            raise ValueError("mode must be preview or purchase")
+        params["basicSearchTerms"] = dict(include=terms,
+                                          exclude=exclude_terms)
+        if since_date:
+            params["sinceDate"] = since_date
+        if created_date_from:
+            params["createdDateFrom"] = created_date_from
+        if created_date_to:
+            params["createdDateTo"] = created_date_to
+        if updated_date_from:
+            params["updatedDateFrom"] = updated_date_from
+        if updated_date_to:
+            params["updatedDateTo"] = updated_date_to
+        if expired_date_from:
+            params["expiredDateFrom"] = expired_date_from
+        if expired_date_to:
+            params["expiredDateTo"] = expired_date_to
 
-        return self._request(endpoint, params)["alerts"]
+        results = self._request(endpoint, params, post=True)
+
+        drs_credit_cost = 10
+
+        if mode == "preview":
+            results["DRSCreditCost"] = drs_credit_cost
+        elif "domainslist" in results:
+            results = results["domainsList"]
+
+        return results
 
     def dns_lookup(self, domain_name, record_type="_all", callback=None):
         """
@@ -501,20 +616,18 @@ class WhoisXMLAPI(object):
             dict: email verification results
         """
 
-        url = "https://emailverification.whoisxmlapi.com/api/v1"
-        params = dict(apiKey=self._api_key, emailAddress=email_address,
-                      format="JSON")
-        response = self._session.get(url, params=params)
-        response.raise_for_status()
+        endpoint = "https://emailverification.whoisxmlapi.com/api/v1"
+        params = dict(emailAddress=email_address)
+        response = self._request(endpoint, params=params)
 
-        return response.json()
+        return response
 
     def reverse_mx(self, mx):
         """
         Performs a reverse MX query
 
         Args:
-            mx (str): The email address to verify
+            mx (str): A MX hostname
 
         Returns:
             list: A list of results
@@ -525,24 +638,133 @@ class WhoisXMLAPI(object):
             result["last_visit"] = epoch_to_datetime(
                 result["last_visit"])
             return result
-        url = "https://reverse-mx-api.whoisxmlapi.com/api/v1"
+        endpoint = "https://reverse-mx-api.whoisxmlapi.com/api/v1"
         results = []
-        params = dict(apiKey=self._api_key, mx=mx,
-                      format="JSON")
-        response = self._session.get(url, params=params)
-        response.raise_for_status()
+        params = dict(mx=mx)
+        response = self._request(endpoint, params=params)
 
-        _results = response.json()["result"]
+        _results = response["result"]
         results += _results
         while len(_results) >= 300:
             params["from"] = results[-1]["name"]
-            response = self._session.get(url, params=params)
-            response.raise_for_status()
+            response = self._request(endpoint, params=params)
 
-            _results = response.json()["result"]
+            _results = response["result"]
 
             results += _results
 
         results = list(map(transform, results))
 
         return results
+
+    def reverse_ns(self, ns):
+        """
+        Performs a reverse MX query
+
+        Args:
+            ns (str): A nameserver hostname
+
+        Returns:
+            list: A list of results
+        """
+        def transform(result):
+            result["first_seen"] = epoch_to_datetime(
+                result["first_seen"])
+            result["last_visit"] = epoch_to_datetime(
+                result["last_visit"])
+            return result
+        endpoint = "https://reverse-ns-api.whoisxmlapi.com/api/v1"
+        results = []
+        params = dict(ns=ns)
+        response = self._request(endpoint, params=params)
+
+        _results = response["result"]
+        results += _results
+        while len(_results) >= 300:
+            params["from"] = results[-1]["name"]
+            response = self._request(endpoint, params=params)
+
+            _results = response["result"]
+
+            results += _results
+
+        results = list(map(transform, results))
+
+        return results
+
+    def reverse_ip(self, ip):
+        """
+        Performs a reverse IP/DNS query
+
+        Args:
+            ip (str): An IPv4 or IPv6 address
+
+        Returns:
+            list: A list of results
+        """
+        def transform(result):
+            result["first_seen"] = epoch_to_datetime(
+                result["first_seen"])
+            result["last_visit"] = epoch_to_datetime(
+                result["last_visit"])
+            return result
+        endpoint = "https://reverse-ip-api.whoisxmlapi.com/api/v1"
+        results = []
+        params = dict(ns=ip)
+        response = self._request(endpoint, params=params)
+
+        _results = response["result"]
+        results += _results
+        while len(_results) >= 300:
+            params["from"] = results[-1]["name"]
+            response = self._request(endpoint, params=params)
+
+            _results = response["result"]
+
+            results += _results
+
+        results = list(map(transform, results))
+
+        return results
+
+    def domain_reputation(self, domain, mode="fast"):
+        """
+        Checks a domain's reputation
+
+        Args:
+            domain (str): The domain to check
+            mode (str):  ``fast`` - some heavy tests and data collectors will
+            be disabled (1 credit)
+            or  ``full`` - all the data and the tests will be processed
+            (3 credits)
+
+        Returns:
+            float: A number ranging from 0.0 being most malicious to 100.0
+            being most safe
+        """
+
+        endpoint = "https://domain-reputation-api.whoisxmlapi.com/api/v1"
+
+        mode = mode.lower()
+        if mode not in ["fast", "full"]:
+            raise ValueError("Mode must be fast or full")
+
+        params = dict(domainName=domain, mode=mode)
+
+        return self._request(endpoint, params)["reputationScore"]
+
+    def ip_geolocation(self, ip):
+        """
+        Returns geolocation information about an IP address
+
+        Args:
+            ip (str): An IPv4  or IPv6 address
+
+        Returns:
+            dict: Geolocation information
+
+        """
+        endpoint = "https://geoipify.whoisxmlapi.com/api/v1"
+        params = dict(ipAddress=ip)
+
+        return self._request(endpoint, params)["location"]
