@@ -33,20 +33,33 @@ logging.basicConfig(
     )
 
 
-def epoch_to_datetime(epoch):
+def epoch_to_datetime(epoch_seconds):
     """
     Converts a UNIX epoch timestamp to a python DateTime object
     
     Args:
-        epoch: A UNIX epoch value
+        epoch_seconds: A UNIX epoch value
 
     Returns:
         DateTime: A Python DateTime representation of the epoch value
 
     """
-    epoch_seconds = int(epoch) / 1000.0
-    return datetime.fromtimestamp(epoch_seconds).strftime(
-        '%Y-%m-%d %H:%M:%S.%f')
+    return datetime.fromtimestamp(int(epoch_seconds))
+
+
+def datetime_to_string(dt):
+    """
+    Converts a datetime object to a human readable string
+
+    Args:
+        dt (datetime): The datetime to convert
+
+    Returns:
+
+    str: formatted ``YYYY-MM-DD HH:MM:SS``
+    """
+
+    return dt.strftime('%Y-%m-%d %H:%M:%S.%f')
 
 
 class WhoisXMLAPIError(RuntimeError):
