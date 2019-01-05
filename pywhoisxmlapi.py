@@ -26,7 +26,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -128,7 +128,7 @@ class WhoisXMLAPI(object):
             response = self._session.get(endpoint, params=params)
         logging.debug("Response {0}".format(response.content))
         response.raise_for_status()
-        redacted_endpoint = response.endpoint
+        redacted_endpoint = response.url
         if "callback" in params.keys() and params["callback"]:
             parse_json = False
             redacted_endpoint = redacted_endpoint.replace(
@@ -440,7 +440,16 @@ class WhoisXMLAPI(object):
 
         return results
 
-    def brand_alert(self, terms, exclude_terms=None, since_date=None,
+    def brand_alert(self,
+                    terms,
+                    exclude_terms=None,
+                    since_date=None,
+                    created_date_from=None,
+                    created_date_to=None,
+                    updated_date_from=None,
+                    updated_date_to=None,
+                    expired_date_from=None,
+                    expired_date_to=None,
                     mode="preview"):
         """
         Lists newly created or deleted domains based on brand terms
@@ -452,6 +461,18 @@ class WhoisXMLAPI(object):
             date, in YYYY-MM-DD format
             Allowed dates are in the [Today minus 14 days — Today] interval.
             Yesterday's date by default.
+            created_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            created_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            updated_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_to (str): Search through domains created before the
+            given date (``YYYY-MM-DD`` format)
+            expired_date_from (str): Search through domains created after the
+            given date (``YYYY-MM-DD`` format)
             mode (str): ``preview`` or ``purchase``
 
         Returns:
@@ -475,6 +496,18 @@ class WhoisXMLAPI(object):
         params["excludeTerms"] = exclude_terms
         if since_date:
             params["sinceDate"] = since_date
+        if created_date_from:
+            params["createdDateFrom"] = created_date_from
+        if created_date_to:
+            params["createdDateTo"] = created_date_to
+        if updated_date_from:
+            params["updatedDateFrom"] = updated_date_from
+        if updated_date_to:
+            params["updatedDateTo"] = updated_date_to
+        if expired_date_from:
+            params["expiredDateFrom"] = expired_date_from
+        if expired_date_to:
+            params["expiredDateTo"] = expired_date_to
 
         results = self._request(endpoint, params, post=True)
 
@@ -523,7 +556,7 @@ class WhoisXMLAPI(object):
             list: A list of dictionaries containing the ``domainName``,
             and its ``action`` (i.e. ``added`` or ``dropped``)
         """
-        endpoint = "https://brand-alert-api.whoisxmlapi.com/api/v2"
+        endpoint = "https://registrant-alert-api.whoisxmlapi.com/api/v2"
         if exclude_terms is None:
             exclude_terms = []
         if len(terms) > 4:

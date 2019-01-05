@@ -77,7 +77,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='US, US states, state legislatures',
+    keywords='WHOIS, WWhoisXMLAPI',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -95,7 +95,7 @@ setup(
     install_requires=['requests', 'docopt'],
 
     # Install whois.py in the system PATH
-    scripts=['scripts/whois.py', 'scripts/whois.py'],
+    scripts=['scripts/whois.py'],
 )
 
 

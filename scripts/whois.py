@@ -10,7 +10,11 @@ Usage:
   whois.py [-d | --debug] [--verbose] <domain> [--output=<output_file>]
   whois.py bulk [-d | --debug] (<domain>... | --input <input_file>) [--csv] [--output=<output_file>]
   whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
-  whois.py brand [-d | --debug] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back>  --output=<output_file>]
+  whois.py history [-d | --debug] [-p | --purchase] <domain> --since=<since>  --output=<output_file>]
+  whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
+  whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
+  whois.py mx [-d | --debug] [--verbose] <mx> [--output=<output_file>]
+  whois.py ns [-d | --debug] [--verbose] <ns> [--output=<output_file>]
   whois.py -h | --help
   whois.py --version
 
@@ -61,28 +65,41 @@ if __name__ == '__main__':
     logging.debug(arguments)
     api = WhoisXMLAPI()
     results = ""
+    search_type = "current"
+    mode = "preview"
+    if arguments["--historic"]:
+        search_type = "historic"
+    if arguments["--purchase"]:
+        mode = "purchase"
     if arguments["bulk"]:
         if arguments["--input"]:
             with open(arguments["--input"]) as input_file:
-                domains = list(map(lambda line: line.rstrip(), input_file.readlines()))
+                domains = list(map(lambda line: line.rstrip(),
+                                   input_file.readlines()))
                 results = api.bulk_whois(domains)
                 if arguments["--csv"]:
                     results = results["csv"]
                 else:
                     results = results["structured"]
     elif arguments["reverse"]:
-        search_type = "current"
-        mode = "preview"
-        if arguments["--historic"]:
-            search_type = "historic"
-        if arguments["--purchase"]:
-            mode = "purchase"
-        results = api.reverse_whois(arguments["<term>"], exclude_terms=arguments["<exclude_term>"],
+        results = api.reverse_whois(arguments["<term>"],
+                                    exclude_terms=arguments["<exclude_term>"],
                                     search_type=search_type,
                                     mode=mode)
+    elif arguments["history"]:
+        results = api.whois_history(arguments["<domain>"],
+                                    since_date=arguments["--since"],
+                                    mode=mode)
     elif arguments["brand"]:
-        results = api.brand_alert(arguments["<term>"], exclude_terms=arguments["<exclude_term>"],
-                                  since_date=arguments["--since"], days_back=arguments["--days-back"])
+        results = api.brand_alert(arguments["<term>"],
+                                  exclude_terms=arguments["<exclude_term>"],
+                                  since_date=arguments["--since"],
+                                  mode=mode)
+    elif arguments["registrant"]:
+        results = api.registrant_alert(
+            arguments["<term>"],
+            exclude_terms=arguments["<exclude_term>"],
+            since_date=arguments["--since"], mode=mode)
     elif arguments["balances"]:
         results = api.get_account_balances()
     else:
@@ -93,12 +110,16 @@ if __name__ == '__main__':
     if arguments["--output"]:
         filename = arguments["--output"]
         with open(filename, "wb") as output_file:
-            if arguments["reverse"] and arguments["--purchase"]:
-                output_file.write("\n".join(results["domains"]).encode("utf-8"))
+            if arguments["--purchase"]:
+                output_file.write(
+                    "\n".join(results["domainsList"]).encode("utf-8"))
             elif arguments["--csv"]:
                 output_file.write(results.encode("utf-8"))
             else:
-                output_file.write(json.dumps(results, indent=2, ensure_ascii=False).encode("utf-8"))
+                output_file.write(json.dumps(results,
+                                             indent=2,
+                                             ensure_ascii=False
+                                             ).encode("utf-8"))
     else:
         if arguments["--csv"]:
             print(results)
