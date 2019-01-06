@@ -7,14 +7,14 @@ whois.py - A CLI for WhoisXMLAPI
 
 Usage:
   whois.py balances
-  whois.py [-d | --debug] [--verbose] <domain> [--output=<output_file>]
-  whois.py bulk [-d | --debug] (<domain>... | --input <input_file>) [--csv] [--output=<output_file>]
-  whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
-  whois.py history [-d | --debug] [-p | --purchase] <domain> [--since=<since>  --output=<output_file>]
-  whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
-  whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
-  whois.py mx [-d | --debug] [--verbose] <mx> [--output=<output_file>]
-  whois.py ns [-d | --debug] [--verbose] <ns> [--output=<output_file>]
+  whois.py [-d | --debug] [--verbose] <domain> [-o | --output=<output_file>]
+  whois.py bulk [-d | --debug] (<domain>... | [-i |--input <input_file>]) [--csv] [ -o | --output=<output_file>]
+  whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> [-o | --output=<output_file>]]
+  whois.py history [-d | --debug] [-p | --purchase] <domain> [--since=<since>  [-o | --output=<output_file>]]
+  whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  [-o | --output=<output_file>]]
+  whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  [-o |--output=<output_file>]]
+  whois.py mx [-d | --debug] [--verbose] <mx> [-o | --output=<output_file>]
+  whois.py ns [-d | --debug] [--verbose] <ns> [-o | --output=<output_file>]
   whois.py -h | --help
   whois.py --version
 
@@ -136,4 +136,8 @@ def _main():
 
 
 if __name__ == '__main__':
-    _main()
+    try:
+        _main()
+    except Exception as e:
+        logging.error(e.__str__())
+        exit(1)
