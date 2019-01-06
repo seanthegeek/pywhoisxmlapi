@@ -139,7 +139,7 @@ class WhoisXMLAPI(object):
 
     def get_account_balances(self):
         """
-        Get all account balances 
+        Get all account balances
 
         Returns:
             Dict: Account balances
@@ -159,7 +159,7 @@ class WhoisXMLAPI(object):
         Args:
             warn_threshold: The value at which account balance warnings are
                             sent
-            warn_threshold_enabled (bool): Enable low balance warnings 
+            warn_threshold_enabled (bool): Enable low balance warnings
             warn_empty_enabled (bool): Enable empty balance warnings
 
         Returns:
@@ -202,7 +202,7 @@ class WhoisXMLAPI(object):
                                       proxies
             thin_whois (bool):  Only return data on the registrant, not the
                                 registrar
-            callback (str): JSONP callback 
+            callback (str): JSONP callback
             parse (bool): Parse the provided raw WHOIS data
             registry_raw_text (str): Optional raw WHOIS registration data to
                                      parse, rather than fetching it via the API
@@ -300,8 +300,8 @@ class WhoisXMLAPI(object):
 
         Args:
             terms (list): Terms to search for
-            exclude_terms (list): Terms to filter by 
-            search_type (str): current or historic 
+            exclude_terms (list): Terms to filter by
+            search_type (str): current or historic
             mode (str): preview or purchase
             created_date_to (str): Search through domains created before the
             given date (``YYYY-MM-DD`` format)
@@ -591,7 +591,7 @@ class WhoisXMLAPI(object):
             domain_name (str): The domain name or sub-domain to lookup
             record_type (str): The DNS resource record type to query for, or
             ``_all`` for all record types
-            callback (str): A JSONP callback 
+            callback (str): A JSONP callback
 
         Returns:
             dict: Lookup results
@@ -607,10 +607,10 @@ class WhoisXMLAPI(object):
 
     def domain_availability(self, domain_name, mode="DNS_ONLY"):
         """
-        Check domain name availability 
-        
+        Check domain name availability
+
         Args:
-            domain_name (str): The domain name to check 
+            domain_name (str): The domain name to check
             mode (str):  ``DNS_ONLY`` or ``DNS_AND_WHOIS``
 
         Returns:
@@ -632,7 +632,7 @@ class WhoisXMLAPI(object):
         Returns metadata about an email address
 
         Args:
-            email_address (str): The email address to verify 
+            email_address (str): The email address to verify
 
         Returns:
             dict: email verification results
