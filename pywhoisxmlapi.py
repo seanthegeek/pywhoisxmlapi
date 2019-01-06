@@ -4,13 +4,10 @@
 
 import os
 import time
-import datetime
 import logging
 from datetime import datetime
 
 from requests import session
-from requests.utils import quote
-
 
 """Copyright 2018 Sean Whalen
 
@@ -36,7 +33,7 @@ logging.basicConfig(
 def epoch_to_datetime(epoch_seconds):
     """
     Converts a UNIX epoch timestamp to a python DateTime object
-    
+
     Args:
         epoch_seconds: A UNIX epoch value
 
@@ -78,7 +75,7 @@ class WhoisXMLAPI(object):
     def __init__(self, api_key=None):
         """
         Configures the API client
-        
+
         Args:
             api_key (str): WhoisXMLAPI API key; overridden by the
             ``WHOIS_KEY`` environment variable
@@ -101,7 +98,7 @@ class WhoisXMLAPI(object):
     def _request(self, endpoint, params=None, post=False, parse_json=True):
         """
         Makes an API request
-        
+
         Args:
             endpoint: The API endpoint to request
             params: The parameters to pass
@@ -143,7 +140,7 @@ class WhoisXMLAPI(object):
     def get_account_balances(self):
         """
         Get all account balances 
-        
+
         Returns:
             Dict: Account balances
         """
@@ -158,7 +155,7 @@ class WhoisXMLAPI(object):
                                      warn_empty_enabled=True):
         """
         Sets account settings for balance warnings
-        
+
         Args:
             warn_threshold: The value at which account balance warnings are
                             sent
@@ -193,7 +190,7 @@ class WhoisXMLAPI(object):
               parse=False, registry_raw_text=None, registrar_raw_text=None):
         """
         Returns parsed WHOIS data
-        
+
         Args:
             domain_name (str): A domain name or IP address
             prefer_fresh (bool): Get the latest WHOIS record even if it's
@@ -247,7 +244,7 @@ class WhoisXMLAPI(object):
     def bulk_whois(self, domains):
         """
         Retrieves WHOIS data for multiple domains, in bulk.
-        
+
         Args:
             domains (list): A list of domains to get WHOIS records for
 
@@ -300,7 +297,7 @@ class WhoisXMLAPI(object):
                       expired_date_to=None, expired_date_from=None):
         """
         Conducts a reverse WHOIS search
-        
+
         Args:
             terms (list): Terms to search for
             exclude_terms (list): Terms to filter by 
@@ -443,7 +440,7 @@ class WhoisXMLAPI(object):
                     mode="preview"):
         """
         Lists newly created or deleted domains based on brand terms
-        
+
         Args:
             terms (list): Brand terms to include in the search (max 4)
             exclude_terms (list): Terms to exclude (max 4)
@@ -589,6 +586,7 @@ class WhoisXMLAPI(object):
     def dns_lookup(self, domain_name, record_type="_all", callback=None):
         """
         Preforms a DNS lookup
+
         Args:
             domain_name (str): The domain name or sub-domain to lookup
             record_type (str): The DNS resource record type to query for, or
@@ -632,6 +630,7 @@ class WhoisXMLAPI(object):
     def verify_email(self, email_address):
         """
         Returns metadata about an email address
+
         Args:
             email_address (str): The email address to verify 
 
