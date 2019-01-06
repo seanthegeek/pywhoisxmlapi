@@ -2,6 +2,8 @@
 pywhoisxmlapi
 =============
 
+|Build Status|
+
 An unofficial client for WhoisXMLAPI
 
 
@@ -35,3 +37,6 @@ An unofficial client for WhoisXMLAPI
       --csv                        Output in CSV format
       --verbose                    Return verbose data
       --version                    Show version
+
+.. |Build Status| image:: https://travis-ci.org/seanthegeek/pywhoisxmlapi.svg?branch=master
+   :target: https://travis-ci.org/seanthegeek/pywhoisxmlapi
