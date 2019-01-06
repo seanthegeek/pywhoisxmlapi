@@ -11,10 +11,10 @@ Usage:
   whois.py bulk [-d | --debug] (<domain>... | [-i |--input <input_file>]) [--csv] [ -o | --output=<output_file>]
   whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> [-o | --output=<output_file>]]
   whois.py history [-d | --debug] [-p | --purchase] <domain> [--since=<since>  [-o | --output=<output_file>]]
-  whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  [-o | --output=<output_file>]]
-  whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  [-o |--output=<output_file>]]
-  whois.py mx [-d | --debug] [--verbose] <mx> [-o | --output=<output_file>]
-  whois.py ns [-d | --debug] [--verbose] <ns> [-o | --output=<output_file>]
+  whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since> [--csv]  [-o | --output=<output_file>]]
+  whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since> [--csv] [-o |--output=<output_file>]]
+  whois.py mx [-d | --debug] [--verbose] <mx> [--csv] [-o | --output=<output_file>]
+  whois.py ns [-d | --debug] [--verbose] <ns> [--csv] [-o | --output=<output_file>]
   whois.py -h | --help
   whois.py --version
 
@@ -27,7 +27,7 @@ Options:
   --since=<since>              Only include results since this date YYY-MM0DD format
   --days-back=<days_back>      Search back through this number of days (12 maximum)
   --historic                   Include historic results
-  --csv                        Output in CSV format instead of JSON
+  --csv                        Output in CSV format
   --verbose                    Return verbose data
   --version                    Show version
 """
@@ -36,6 +36,8 @@ from __future__ import print_function, unicode_literals
 
 import logging
 import json
+from io import BytesIO
+from csv import DictWriter
 
 from docopt import docopt
 
@@ -99,19 +101,50 @@ def _main():
                                   exclude_terms=arguments["<exclude_term>"],
                                   since_date=arguments["--since"],
                                   mode=mode)
+
         if arguments["--purchase"]:
-            results = dict(results=results)
+            if arguments["--csv"]:
+                csv_str = BytesIO()
+                fields = ["domainName", "action"]
+                writer = DictWriter(csv_str, fields)
+                writer.writeheader()
+                writer.writerows(results)
+                results = csv_str.read()
+            else:
+                results = dict(results=results)
     elif arguments["registrant"]:
         results = api.registrant_alert(
             arguments["<term>"],
             exclude_terms=arguments["<exclude_term>"],
             since_date=arguments["--since"], mode=mode)
         if arguments["--purchase"]:
-            results = dict(results=results)
+            if arguments["--csv"]:
+                csv_str = BytesIO()
+                fields = ["domainName", "action"]
+                writer = DictWriter(csv_str, fields)
+                writer.writeheader()
+                writer.writerows(results)
+                results = csv_str.read()
+            else:
+                results = dict(results=results)
     elif arguments["mx"]:
         results = api.reverse_mx(arguments["<mx>"][0])
+        if arguments["--csv"]:
+            csv_str = BytesIO()
+            fields = ["name", "first_seen", "last_visit"]
+            writer = DictWriter(csv_str, fields)
+            writer.writeheader()
+            writer.writerows(results)
+            results = csv_str.read()
     elif arguments["ns"]:
         results = api.reverse_mx(arguments["<ns>"][0])
+        if arguments["--csv"]:
+            csv_str = BytesIO()
+            fields = ["name", "first_seen", "last_visit"]
+            writer = DictWriter(csv_str, fields)
+            writer.writeheader()
+            writer.writerows(results)
+            results = csv_str.read()
     elif arguments["balances"]:
         results = api.get_account_balances()
     else:
