@@ -1,0 +1,989 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pywhoisxmlapi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pywhoisxmlapi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>pywhoisxmlapi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pywhoisxmlapi</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;An unofficial client for WhoisXMLAPI&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">requests</span> <span class="k">import</span> <span class="n">session</span>
+
+<span class="sd">&quot;&quot;&quot;Copyright 2018 Sean Whalen</span>
+
+<span class="sd">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">you may not use this file except in compliance with the License.</span>
+<span class="sd">You may obtain a copy of the License at</span>
+
+<span class="sd">   http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">See the License for the specific language governing permissions and</span>
+<span class="sd">limitations under the License.&quot;&quot;&quot;</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.0&quot;</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="epoch_to_datetime"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.epoch_to_datetime">[docs]</a><span class="k">def</span> <span class="nf">epoch_to_datetime</span><span class="p">(</span><span class="n">epoch_seconds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a UNIX epoch timestamp to a python DateTime object</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        epoch_seconds: A UNIX epoch value</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DateTime: A Python DateTime representation of the epoch value</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">epoch_seconds</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="datetime_to_string"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.datetime_to_string">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_string</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a datetime object to a human readable string</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dt (datetime): The datetime to convert</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    str: formatted ``YYYY-MM-DD HH:MM:SS``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WhoisXMLAPIError"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPIError">[docs]</a><span class="k">class</span> <span class="nc">WhoisXMLAPIError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when an error is returned by WhoisXMLAPI</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="WhoisXMLAPI"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI">[docs]</a><span class="k">class</span> <span class="nc">WhoisXMLAPI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Python interface to WhoisXMLAPI</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_root</span> <span class="o">=</span> <span class="s2">&quot;https://www.whoisxmlapi.com&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configures the API client</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            api_key (str): WhoisXMLAPI API key; overridden by the</span>
+<span class="sd">            ``WHOIS_KEY`` environment variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s2">&quot;WHOIS_KEY&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WHOIS_KEY&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;WHOIS_KEY&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;WHOIS_KEY&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;API key must provided as the api_key parameter, or the &quot;</span>
+                <span class="s2">&quot;WHOIS_KEY environment variable&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_api_key</span> <span class="o">=</span> <span class="n">api_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;pywhoisxmlapi/</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">)})</span>
+
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">parse_json</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes an API request</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            endpoint: The API endpoint to request</span>
+<span class="sd">            params: The parameters to pass</span>
+<span class="sd">            post (bool): If True make a ``POST`` request instead of ``GET``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The API call results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;outputFormat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;JSON&quot;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;apiKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_api_key</span>
+
+        <span class="k">if</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">/</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">WhoisXMLAPI</span><span class="o">.</span><span class="n">_root</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
+        <span class="n">endpoint</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Params: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">post</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Response </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;callback&quot;</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;callback&quot;</span><span class="p">]:</span>
+            <span class="n">parse_json</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">parse_json</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;ErrorMessage&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;ErrorMessage&quot;</span><span class="p">][</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span>
+                <span class="k">raise</span> <span class="n">WhoisXMLAPIError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+<div class="viewcode-block" id="WhoisXMLAPI.get_account_balances"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.get_account_balances">[docs]</a>    <span class="k">def</span> <span class="nf">get_account_balances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all account balances</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict: Account balances</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/accountServices.php&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">servicetype</span><span class="o">=</span><span class="s2">&quot;accountbalance&quot;</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;JSON&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.set_account_balance_warnings"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings">[docs]</a>    <span class="k">def</span> <span class="nf">set_account_balance_warnings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">warn_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">warn_threshold_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                     <span class="n">warn_empty_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets account settings for balance warnings</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            warn_threshold: The value at which account balance warnings are</span>
+<span class="sd">                            sent</span>
+<span class="sd">            warn_threshold_enabled (bool): Enable low balance warnings</span>
+<span class="sd">            warn_empty_enabled (bool): Enable empty balance warnings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Acknowledgement</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/accountServices.php&quot;</span>
+
+        <span class="k">if</span> <span class="n">warn_threshold_enabled</span><span class="p">:</span>
+            <span class="n">warn_empty_enabled</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warn_threshold_enabled</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">warn_empty_enabled</span><span class="p">:</span>
+            <span class="n">warn_empty_enabled</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warn_empty_enabled</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">servicetype</span><span class="o">=</span><span class="s2">&quot;accountUpdate&quot;</span><span class="p">,</span>
+                      <span class="n">output_format</span><span class="o">=</span><span class="s2">&quot;JSON&quot;</span><span class="p">,</span>
+                      <span class="n">warn_threshold</span><span class="o">=</span><span class="n">warn_threshold</span><span class="p">,</span>
+                      <span class="n">warn_threshold_enabled</span><span class="o">=</span><span class="n">warn_threshold_enabled</span><span class="p">,</span>
+                      <span class="n">warn_empty_enabled</span><span class="o">=</span><span class="n">warn_empty_enabled</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.whois"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.whois">[docs]</a>    <span class="k">def</span> <span class="nf">whois</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_name</span><span class="p">,</span> <span class="n">prefer_fresh</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">da</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">check_proxy_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">thin_whois</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">parse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">registry_raw_text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">registrar_raw_text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns parsed WHOIS data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domain_name (str): A domain name or IP address</span>
+<span class="sd">            prefer_fresh (bool): Get the latest WHOIS record even if it&#39;s</span>
+<span class="sd">                                incomplete</span>
+<span class="sd">            da (int): 0 - Do not check for domain amiability; 1 - quick check;</span>
+<span class="sd">                      2  - slower, but most accurate</span>
+<span class="sd">            ip (bool): Resolve IP addresses</span>
+<span class="sd">            check_proxy_data (bool):  Check if registration matches known</span>
+<span class="sd">                                      proxies</span>
+<span class="sd">            thin_whois (bool):  Only return data on the registrant, not the</span>
+<span class="sd">                                registrar</span>
+<span class="sd">            callback (str): JSONP callback</span>
+<span class="sd">            parse (bool): Parse the provided raw WHOIS data</span>
+<span class="sd">            registry_raw_text (str): Optional raw WHOIS registration data to</span>
+<span class="sd">                                     parse, rather than fetching it via the API</span>
+<span class="sd">            registrar_raw_text (str): Optional raw WHOIS registration data to</span>
+<span class="sd">                                     parse, rather than fetching it via the API</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Parsed WHOIS data</span>
+<span class="sd">            str: WHOIS data wrapped in JSONP if ``callback`` was specified</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/whoisserver/WhoisService&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">domainName</span><span class="o">=</span><span class="n">domain_name</span><span class="p">,</span> <span class="n">da</span><span class="o">=</span><span class="n">da</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefer_fresh</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;preferFresh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">da</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;da&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">ip</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">check_proxy_data</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;checkProxyData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">thin_whois</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;thinWhois&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">callback</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;callback&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="k">if</span> <span class="n">parse</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;_parse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">registry_raw_text</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;registryRawText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry_raw_text</span>
+        <span class="k">if</span> <span class="n">registrar_raw_text</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;RegistrarRawText&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registrar_raw_text</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;WhoisRecord&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.bulk_whois"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.bulk_whois">[docs]</a>    <span class="k">def</span> <span class="nf">bulk_whois</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domains</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves WHOIS data for multiple domains, in bulk.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domains (list): A list of domains to get WHOIS records for</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary with  keys:</span>
+<span class="sd">                - ``structured`` - parsed data in a dictionary</span>
+<span class="sd">                - ``csv``: results in CSV format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;domains must be a list&quot;</span><span class="p">)</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/BulkWhoisLookup/bulkServices/bulkWhois&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">domains</span><span class="o">=</span><span class="n">domains</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">params</span><span class="p">[</span><span class="s2">&quot;domains&quot;</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;requestId&quot;</span><span class="p">]</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;searchType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;maxRecords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;startIndex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/BulkWhoisLookup/bulkServices/getRecords&quot;</span>
+        <span class="n">records_left</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">domains</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">records_left</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">records_left</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;recordsLeft&quot;</span><span class="p">]</span>
+
+        <span class="n">structured</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;whoisRecords&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">structured</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;domainFetchedTime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;domainFetchedTime&quot;</span><span class="p">])</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://www.whoisxmlapi.com/BulkWhoisLookup/&quot;</span> \
+                   <span class="s2">&quot;bulkServices/download&quot;</span>
+        <span class="n">csv</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="c1"># remove blank lines</span>
+            <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">csv</span> <span class="o">+=</span> <span class="n">line</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">structured</span><span class="o">=</span><span class="n">structured</span><span class="p">,</span> <span class="n">csv</span><span class="o">=</span><span class="n">csv</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.reverse_whois"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.reverse_whois">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_whois</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">exclude_terms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span>
+                      <span class="n">created_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">created_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">updated_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">updated_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">expired_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expired_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Conducts a reverse WHOIS search</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            terms (list): Terms to search for</span>
+<span class="sd">            exclude_terms (list): Terms to filter by</span>
+<span class="sd">            search_type (str): current or historic</span>
+<span class="sd">            mode (str): preview or purchase</span>
+<span class="sd">            created_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of preview data</span>
+<span class="sd">            list: A list of results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://reverse-whois-api.whoisxmlapi.com/api/v2&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">search_type</span><span class="o">=</span><span class="n">search_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">created_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_to</span>
+        <span class="k">if</span> <span class="n">created_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_from</span>
+        <span class="k">if</span> <span class="n">updated_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_from</span>
+        <span class="k">if</span> <span class="n">updated_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_to</span>
+        <span class="k">if</span> <span class="n">expired_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_from</span>
+        <span class="k">if</span> <span class="n">expired_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_to</span>
+
+        <span class="k">if</span> <span class="n">exclude_terms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exclude_terms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">search_type</span> <span class="o">=</span> <span class="n">search_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exclude_terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of excluded terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">search_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;historic&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Search type must be current or historic&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="s2">&quot;purchase&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mode must be preview or purchase&quot;</span><span class="p">)</span>
+
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;basicSearchTerms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span>
+                                          <span class="n">exclude</span><span class="o">=</span><span class="n">exclude_terms</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">drs_credit_cost</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;preview&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;DRSCreditCost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drs_credit_cost</span>
+        <span class="k">elif</span> <span class="s2">&quot;domainslist&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;domainsList&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.whois_history"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.whois_history">[docs]</a>    <span class="k">def</span> <span class="nf">whois_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span>
+                      <span class="n">since_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">created_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">created_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">updated_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">updated_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">expired_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">expired_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;preview&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns WHOIS history for a given domains</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domain (str): The domain</span>
+<span class="sd">            since_date (str): Only return domains created or deleted since</span>
+<span class="sd">            this date, (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            mode (str): ``preview`` or ``purchase``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of preview data</span>
+<span class="sd">            list: A list of parsed historic WHOIS records, starting with the</span>
+<span class="sd">            current record</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://whois-history-api.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">domainName</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">since_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;sinceDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">since_date</span>
+        <span class="k">if</span> <span class="n">created_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_from</span>
+        <span class="k">if</span> <span class="n">created_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_to</span>
+        <span class="k">if</span> <span class="n">updated_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_from</span>
+        <span class="k">if</span> <span class="n">updated_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_to</span>
+        <span class="k">if</span> <span class="n">expired_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_from</span>
+        <span class="k">if</span> <span class="n">expired_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_to</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">drs_credit_cost</span> <span class="o">=</span> <span class="mi">50</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;preview&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;DRSCreditCost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drs_credit_cost</span>
+        <span class="k">elif</span> <span class="s2">&quot;records&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.brand_alert"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.brand_alert">[docs]</a>    <span class="k">def</span> <span class="nf">brand_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">terms</span><span class="p">,</span>
+                    <span class="n">exclude_terms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">since_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">created_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">created_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">updated_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">updated_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">expired_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">expired_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;preview&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists newly created or deleted domains based on brand terms</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            terms (list): Brand terms to include in the search (max 4)</span>
+<span class="sd">            exclude_terms (list): Terms to exclude (max 4)</span>
+<span class="sd">            since_date (str): Only return domains created or deleted since this</span>
+<span class="sd">            date, in YYYY-MM-DD format</span>
+<span class="sd">            Allowed dates are in the [Today minus 14 days — Today] interval.</span>
+<span class="sd">            Yesterday&#39;s date by default.</span>
+<span class="sd">            created_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            mode (str): ``preview`` or ``purchase``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of preview data</span>
+<span class="sd">            list: A list of dictionaries containing the ``domainName``,</span>
+<span class="sd">            and its ``action`` (i.e. ``added`` or ``dropped``)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://brand-alert-api.whoisxmlapi.com/api/v2&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">apiKey</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_api_key</span><span class="p">,</span> <span class="n">includeSearchTerms</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span>
+                      <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">exclude_terms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exclude_terms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exclude_terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of excluded terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="s2">&quot;purchase&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mode must be preview or purchase&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;excludeTerms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exclude_terms</span>
+        <span class="k">if</span> <span class="n">since_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;sinceDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">since_date</span>
+        <span class="k">if</span> <span class="n">created_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_from</span>
+        <span class="k">if</span> <span class="n">created_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_to</span>
+        <span class="k">if</span> <span class="n">updated_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_from</span>
+        <span class="k">if</span> <span class="n">updated_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_to</span>
+        <span class="k">if</span> <span class="n">expired_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_from</span>
+        <span class="k">if</span> <span class="n">expired_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_to</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">drs_credit_cost</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;preview&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;DRSCreditCost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drs_credit_cost</span>
+        <span class="k">elif</span> <span class="s2">&quot;domainslist&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;domainsList&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.registrant_alert"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.registrant_alert">[docs]</a>    <span class="k">def</span> <span class="nf">registrant_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">exclude_terms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">since_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">created_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">created_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">updated_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">updated_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">expired_date_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">expired_date_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;preview&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists newly created or deleted domains based on registrant</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            terms (list): Brand terms to include in the search (max 4)</span>
+<span class="sd">            exclude_terms (list): Terms to exclude (max 4)</span>
+<span class="sd">            since_date (str): Only return domains created or deleted since</span>
+<span class="sd">            this date, (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            created_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            updated_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_to (str): Search through domains created before the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            expired_date_from (str): Search through domains created after the</span>
+<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">            mode (str): ``preview`` or ``purchase``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of preview data</span>
+<span class="sd">            list: A list of dictionaries containing the ``domainName``,</span>
+<span class="sd">            and its ``action`` (i.e. ``added`` or ``dropped``)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://registrant-alert-api.whoisxmlapi.com/api/v2&quot;</span>
+        <span class="k">if</span> <span class="n">exclude_terms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exclude_terms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exclude_terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of excluded terms cannot be greater than 4&quot;</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;preview&quot;</span><span class="p">,</span> <span class="s2">&quot;purchase&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;mode must be preview or purchase&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;basicSearchTerms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span>
+                                          <span class="n">exclude</span><span class="o">=</span><span class="n">exclude_terms</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">since_date</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;sinceDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">since_date</span>
+        <span class="k">if</span> <span class="n">created_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_from</span>
+        <span class="k">if</span> <span class="n">created_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;createdDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">created_date_to</span>
+        <span class="k">if</span> <span class="n">updated_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_from</span>
+        <span class="k">if</span> <span class="n">updated_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;updatedDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_date_to</span>
+        <span class="k">if</span> <span class="n">expired_date_from</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateFrom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_from</span>
+        <span class="k">if</span> <span class="n">expired_date_to</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;expiredDateTo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expired_date_to</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">drs_credit_cost</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;preview&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;DRSCreditCost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">drs_credit_cost</span>
+        <span class="k">elif</span> <span class="s2">&quot;domainslist&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;domainsList&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.dns_lookup"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.dns_lookup">[docs]</a>    <span class="k">def</span> <span class="nf">dns_lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_name</span><span class="p">,</span> <span class="n">record_type</span><span class="o">=</span><span class="s2">&quot;_all&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Preforms a DNS lookup</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domain_name (str): The domain name or sub-domain to lookup</span>
+<span class="sd">            record_type (str): The DNS resource record type to query for, or</span>
+<span class="sd">            ``_all`` for all record types</span>
+<span class="sd">            callback (str): A JSONP callback</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Lookup results</span>
+<span class="sd">            str: lookup results data wrapped in JSONP if ``callback`` was</span>
+<span class="sd">            specified</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/whoisserver/DNSService&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">domainName</span><span class="o">=</span><span class="n">domain_name</span><span class="p">,</span> <span class="n">recordType</span><span class="o">=</span><span class="n">record_type</span><span class="p">,</span>
+                      <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.domain_availability"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.domain_availability">[docs]</a>    <span class="k">def</span> <span class="nf">domain_availability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain_name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;DNS_ONLY&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check domain name availability</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domain_name (str): The domain name to check</span>
+<span class="sd">            mode (str):  ``DNS_ONLY`` or ``DNS_AND_WHOIS``</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: The availability of the domain name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;/whoisserver/WhoisService&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="s2">&quot;GET_DN_AVAILABILITY&quot;</span><span class="p">,</span> <span class="n">getMode</span><span class="o">=</span><span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+                      <span class="n">domainName</span><span class="o">=</span><span class="n">domain_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;DNS_ONLY&quot;</span><span class="p">,</span> <span class="s2">&quot;DNS_AND_WHOIS&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Mode must be DNS_ONLY or DNS_AND_WHOIS&quot;</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;domainAvailability&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;AVAILABLE&quot;</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.verify_email"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.verify_email">[docs]</a>    <span class="k">def</span> <span class="nf">verify_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email_address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metadata about an email address</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            email_address (str): The email address to verify</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: email verification results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://emailverification.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">emailAddress</span><span class="o">=</span><span class="n">email_address</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.reverse_mx"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.reverse_mx">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_mx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs a reverse MX query</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mx (str): A MX hostname</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">])</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://reverse-mx-api.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mx</span><span class="o">=</span><span class="n">mx</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">_results</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">results</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.reverse_ns"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.reverse_ns">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_ns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs a reverse MX query</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ns (str): A nameserver hostname</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">])</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://reverse-ns-api.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ns</span><span class="o">=</span><span class="n">ns</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">_results</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">results</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.reverse_ip"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.reverse_ip">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs a reverse IP/DNS query</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ip (str): An IPv4 or IPv6 address</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;first_seen&quot;</span><span class="p">])</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch_to_datetime</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;last_visit&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://reverse-ip-api.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">ip</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">_results</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="n">_results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+
+            <span class="n">results</span> <span class="o">+=</span> <span class="n">_results</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">results</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.domain_reputation"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.domain_reputation">[docs]</a>    <span class="k">def</span> <span class="nf">domain_reputation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks a domain&#39;s reputation</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            domain (str): The domain to check</span>
+<span class="sd">            mode (str):  ``fast`` - some heavy tests and data collectors will</span>
+<span class="sd">            be disabled (1 credit)</span>
+<span class="sd">            or  ``full`` - all the data and the tests will be processed</span>
+<span class="sd">            (3 credits)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: A number ranging from 0.0 being most malicious to 100.0</span>
+<span class="sd">            being most safe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://domain-reputation-api.whoisxmlapi.com/api/v1&quot;</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Mode must be fast or full&quot;</span><span class="p">)</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">domainName</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)[</span><span class="s2">&quot;reputationScore&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="WhoisXMLAPI.ip_geolocation"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI.ip_geolocation">[docs]</a>    <span class="k">def</span> <span class="nf">ip_geolocation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns geolocation information about an IP address</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ip (str): An IPv4  or IPv6 address</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Geolocation information</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://geoipify.whoisxmlapi.com/api/v1&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ipAddress</span><span class="o">=</span><span class="n">ip</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">params</span><span class="p">)[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Sean Whalen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

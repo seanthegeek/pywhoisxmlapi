@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI &mdash; pywhoisxmlapi 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> pywhoisxmlapi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI</a><ul>
+<li><a class="reference internal" href="#module-pywhoisxmlapi">API</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pywhoisxmlapi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pywhoisxmlapi-documentation-an-unoffical-client-for-whoisxmlapi">
+<h1>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI<a class="headerlink" href="#pywhoisxmlapi-documentation-an-unoffical-client-for-whoisxmlapi" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://travis-ci.org/seanthegeek/pywhoisxmlapi"><img alt="Build Status" src="https://travis-ci.org/seanthegeek/pywhoisxmlapi.svg?branch=master" /></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span> <span class="n">A</span> <span class="n">CLI</span> <span class="k">for</span> <span class="n">WhoisXMLAPI</span>
+
+<span class="n">Usage</span><span class="p">:</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">balances</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">bulk</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;...</span> <span class="o">|</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="o">|--</span><span class="nb">input</span> <span class="o">&lt;</span><span class="n">input_file</span><span class="o">&gt;</span><span class="p">])</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span> <span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">reverse</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">historic</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">term</span><span class="o">&gt;...</span> <span class="p">[</span><span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">exclude_term</span><span class="o">&gt;...</span> <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">days</span><span class="o">-</span><span class="n">back</span><span class="o">=&lt;</span><span class="n">days_back</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">history</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span>  <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">brand</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">term</span><span class="o">&gt;...</span> <span class="p">[</span><span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">exclude_term</span><span class="o">&gt;...</span> <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span>  <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">registrant</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">term</span><span class="o">&gt;...</span> <span class="p">[</span><span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">exclude_term</span><span class="o">&gt;...</span> <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">reverse</span><span class="o">-</span><span class="n">ip</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">reverse</span><span class="o">-</span><span class="n">mx</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">mx</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">reverse</span><span class="o">-</span><span class="n">ns</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">ns</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">h</span> <span class="o">|</span> <span class="o">--</span><span class="n">help</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">version</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span> <span class="o">--</span><span class="n">help</span>                    <span class="n">Show</span> <span class="n">this</span> <span class="n">screen</span>
+  <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">debug</span>                   <span class="n">Enable</span> <span class="n">debug</span> <span class="n">output</span>
+  <span class="o">-</span><span class="n">i</span> <span class="o">--</span><span class="nb">input</span><span class="o">=&lt;</span><span class="n">input_file</span><span class="o">&gt;</span>      <span class="n">A</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">one</span> <span class="n">domain</span> <span class="n">per</span> <span class="n">line</span>
+  <span class="o">-</span><span class="n">o</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span>    <span class="n">Output</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="k">with</span> <span class="n">this</span> <span class="n">file</span> <span class="n">name</span><span class="p">;</span> <span class="n">the</span> <span class="n">file</span> <span class="n">extension</span> <span class="ow">is</span> <span class="n">added</span> <span class="n">automatically</span>
+  <span class="o">-</span><span class="n">p</span> <span class="o">--</span><span class="n">purchase</span>                <span class="n">Purchase</span> <span class="n">the</span> <span class="n">results</span> <span class="k">with</span> <span class="n">a</span> <span class="n">Domain</span> <span class="n">Research</span> <span class="n">Suite</span> <span class="p">(</span><span class="n">DRS</span><span class="p">)</span> <span class="n">credit</span>
+  <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span>              <span class="n">Only</span> <span class="n">include</span> <span class="n">results</span> <span class="n">since</span> <span class="n">this</span> <span class="n">date</span> <span class="n">YYY</span><span class="o">-</span><span class="n">MM0DD</span> <span class="nb">format</span>
+  <span class="o">--</span><span class="n">days</span><span class="o">-</span><span class="n">back</span><span class="o">=&lt;</span><span class="n">days_back</span><span class="o">&gt;</span>      <span class="n">Search</span> <span class="n">back</span> <span class="n">through</span> <span class="n">this</span> <span class="n">number</span> <span class="n">of</span> <span class="n">days</span> <span class="p">(</span><span class="mi">12</span> <span class="n">maximum</span><span class="p">)</span>
+  <span class="o">--</span><span class="n">historic</span>                   <span class="n">Include</span> <span class="n">historic</span> <span class="n">results</span>
+  <span class="o">--</span><span class="n">csv</span>                        <span class="n">Output</span> <span class="ow">in</span> <span class="n">CSV</span> <span class="nb">format</span>
+  <span class="o">--</span><span class="n">verbose</span>                    <span class="n">Return</span> <span class="n">verbose</span> <span class="n">data</span>
+  <span class="o">--</span><span class="n">version</span>                    <span class="n">Show</span> <span class="n">version</span>
+</pre></div>
+</div>
+<div class="section" id="module-pywhoisxmlapi">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-pywhoisxmlapi" title="Permalink to this headline">¶</a></h2>
+<p>An unofficial client for WhoisXMLAPI</p>
+<dl class="class">
+<dt id="pywhoisxmlapi.WhoisXMLAPI">
+<em class="property">class </em><code class="descclassname">pywhoisxmlapi.</code><code class="descname">WhoisXMLAPI</code><span class="sig-paren">(</span><em>api_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Python interface to WhoisXMLAPI</p>
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.brand_alert">
+<code class="descname">brand_alert</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.brand_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.brand_alert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists newly created or deleted domains based on brand terms</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>terms</strong> (<em>list</em>) – Brand terms to include in the search (max 4)</li>
+<li><strong>exclude_terms</strong> (<em>list</em>) – Terms to exclude (max 4)</li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since this</li>
+<li><strong>in YYYY-MM-DD format</strong> (<em>date</em><em>,</em>) – </li>
+<li><strong>dates are in the</strong><strong> [</strong><strong>Today minus 14 days — Today</strong><strong>] </strong><strong>interval.</strong> (<em>Allowed</em>) – </li>
+<li><strong>date by default.</strong> (<em>Yesterday's</em>) – </li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> (<em>given</em>) – </li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dictionary of preview data
+list: A list of dictionaries containing the <code class="docutils literal notranslate"><span class="pre">domainName</span></code>,
+and its <code class="docutils literal notranslate"><span class="pre">action</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">added</span></code> or <code class="docutils literal notranslate"><span class="pre">dropped</span></code>)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.bulk_whois">
+<code class="descname">bulk_whois</code><span class="sig-paren">(</span><em>domains</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.bulk_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.bulk_whois" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves WHOIS data for multiple domains, in bulk.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domains</strong> (<em>list</em>) – A list of domains to get WHOIS records for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A dictionary with  keys:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">structured</span></code> - parsed data in a dictionary</li>
+<li><code class="docutils literal notranslate"><span class="pre">csv</span></code>: results in CSV format</li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.dns_lookup">
+<code class="descname">dns_lookup</code><span class="sig-paren">(</span><em>domain_name</em>, <em>record_type='_all'</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.dns_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.dns_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preforms a DNS lookup</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain_name</strong> (<em>str</em>) – The domain name or sub-domain to lookup</li>
+<li><strong>record_type</strong> (<em>str</em>) – The DNS resource record type to query for, or</li>
+<li><strong>for all record types</strong> (<em>_all</em>) – </li>
+<li><strong>callback</strong> (<em>str</em>) – A JSONP callback</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Lookup results
+str: lookup results data wrapped in JSONP if <code class="docutils literal notranslate"><span class="pre">callback</span></code> was
+specified</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.domain_availability">
+<code class="descname">domain_availability</code><span class="sig-paren">(</span><em>domain_name</em>, <em>mode='DNS_ONLY'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check domain name availability</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain_name</strong> (<em>str</em>) – The domain name to check</li>
+<li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">DNS_ONLY</span></code> or <code class="docutils literal notranslate"><span class="pre">DNS_AND_WHOIS</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The availability of the domain name</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.domain_reputation">
+<code class="descname">domain_reputation</code><span class="sig-paren">(</span><em>domain</em>, <em>mode='fast'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_reputation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_reputation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks a domain’s reputation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> (<em>str</em>) – The domain to check</li>
+<li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">fast</span></code> - some heavy tests and data collectors will</li>
+<li><strong>disabled</strong> (<em>be</em>) – </li>
+<li><strong>full - all the data and the tests will be processed</strong> (<em>or</em>) – </li>
+<li><strong>credits</strong><strong>)</strong> (<em>(</em><em>3</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A number ranging from 0.0 being most malicious to 100.0
+being most safe</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.get_account_balances">
+<code class="descname">get_account_balances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.get_account_balances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.get_account_balances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all account balances</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Account balances</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.ip_geolocation">
+<code class="descname">ip_geolocation</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.ip_geolocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.ip_geolocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns geolocation information about an IP address</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ip</strong> (<em>str</em>) – An IPv4  or IPv6 address</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Geolocation information</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.registrant_alert">
+<code class="descname">registrant_alert</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.registrant_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.registrant_alert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists newly created or deleted domains based on registrant</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>terms</strong> (<em>list</em>) – Brand terms to include in the search (max 4)</li>
+<li><strong>exclude_terms</strong> (<em>list</em>) – Terms to exclude (max 4)</li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since</li>
+<li><strong>date</strong><strong>,</strong> (<em>this</em>) – </li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> (<em>given</em>) – </li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dictionary of preview data
+list: A list of dictionaries containing the <code class="docutils literal notranslate"><span class="pre">domainName</span></code>,
+and its <code class="docutils literal notranslate"><span class="pre">action</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">added</span></code> or <code class="docutils literal notranslate"><span class="pre">dropped</span></code>)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_ip">
+<code class="descname">reverse_ip</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a reverse IP/DNS query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ip</strong> (<em>str</em>) – An IPv4 or IPv6 address</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of results</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_mx">
+<code class="descname">reverse_mx</code><span class="sig-paren">(</span><em>mx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_mx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_mx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a reverse MX query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mx</strong> (<em>str</em>) – A MX hostname</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of results</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_ns">
+<code class="descname">reverse_ns</code><span class="sig-paren">(</span><em>ns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a reverse MX query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ns</strong> (<em>str</em>) – A nameserver hostname</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of results</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_whois">
+<code class="descname">reverse_whois</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>search_type='current'</em>, <em>mode='preview'</em>, <em>created_date_to=None</em>, <em>created_date_from=None</em>, <em>updated_date_to=None</em>, <em>updated_date_from=None</em>, <em>expired_date_to=None</em>, <em>expired_date_from=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_whois" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conducts a reverse WHOIS search</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>terms</strong> (<em>list</em>) – Terms to search for</li>
+<li><strong>exclude_terms</strong> (<em>list</em>) – Terms to filter by</li>
+<li><strong>search_type</strong> (<em>str</em>) – current or historic</li>
+<li><strong>mode</strong> (<em>str</em>) – preview or purchase</li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> (<em>given</em>) – </li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dictionary of preview data
+list: A list of results</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings">
+<code class="descname">set_account_balance_warnings</code><span class="sig-paren">(</span><em>warn_threshold=10</em>, <em>warn_threshold_enabled=True</em>, <em>warn_empty_enabled=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.set_account_balance_warnings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets account settings for balance warnings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>warn_threshold</strong> – The value at which account balance warnings are
+sent</li>
+<li><strong>warn_threshold_enabled</strong> (<em>bool</em>) – Enable low balance warnings</li>
+<li><strong>warn_empty_enabled</strong> (<em>bool</em>) – Enable empty balance warnings</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Acknowledgement</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.verify_email">
+<code class="descname">verify_email</code><span class="sig-paren">(</span><em>email_address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.verify_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.verify_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns metadata about an email address</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>email_address</strong> (<em>str</em>) – The email address to verify</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">email verification results</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.whois">
+<code class="descname">whois</code><span class="sig-paren">(</span><em>domain_name</em>, <em>prefer_fresh=False</em>, <em>da=0</em>, <em>ip=True</em>, <em>check_proxy_data=True</em>, <em>thin_whois=False</em>, <em>callback=None</em>, <em>parse=False</em>, <em>registry_raw_text=None</em>, <em>registrar_raw_text=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns parsed WHOIS data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain_name</strong> (<em>str</em>) – A domain name or IP address</li>
+<li><strong>prefer_fresh</strong> (<em>bool</em>) – Get the latest WHOIS record even if it’s
+incomplete</li>
+<li><strong>da</strong> (<em>int</em>) – 0 - Do not check for domain amiability; 1 - quick check;
+2  - slower, but most accurate</li>
+<li><strong>ip</strong> (<em>bool</em>) – Resolve IP addresses</li>
+<li><strong>check_proxy_data</strong> (<em>bool</em>) – Check if registration matches known
+proxies</li>
+<li><strong>thin_whois</strong> (<em>bool</em>) – Only return data on the registrant, not the
+registrar</li>
+<li><strong>callback</strong> (<em>str</em>) – JSONP callback</li>
+<li><strong>parse</strong> (<em>bool</em>) – Parse the provided raw WHOIS data</li>
+<li><strong>registry_raw_text</strong> (<em>str</em>) – Optional raw WHOIS registration data to
+parse, rather than fetching it via the API</li>
+<li><strong>registrar_raw_text</strong> (<em>str</em>) – Optional raw WHOIS registration data to
+parse, rather than fetching it via the API</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Parsed WHOIS data
+str: WHOIS data wrapped in JSONP if <code class="docutils literal notranslate"><span class="pre">callback</span></code> was specified</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.whois_history">
+<code class="descname">whois_history</code><span class="sig-paren">(</span><em>domain</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns WHOIS history for a given domains</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>domain</strong> (<em>str</em>) – The domain</li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since</li>
+<li><strong>date</strong><strong>,</strong> (<em>this</em>) – </li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> (<em>given</em>) – </li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
+<li><strong>date</strong> – </li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
+<li><strong>date</strong> – </li>
+<li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dictionary of preview data
+list: A list of parsed historic WHOIS records, starting with the
+current record</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pywhoisxmlapi.WhoisXMLAPIError">
+<em class="property">exception </em><code class="descclassname">pywhoisxmlapi.</code><code class="descname">WhoisXMLAPIError</code><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPIError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPIError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when an error is returned by WhoisXMLAPI</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pywhoisxmlapi.datetime_to_string">
+<code class="descclassname">pywhoisxmlapi.</code><code class="descname">datetime_to_string</code><span class="sig-paren">(</span><em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#datetime_to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.datetime_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a datetime object to a human readable string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dt</strong> (<em>datetime</em>) – The datetime to convert</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+<p>str: formatted <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span> <span class="pre">HH:MM:SS</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pywhoisxmlapi.epoch_to_datetime">
+<code class="descclassname">pywhoisxmlapi.</code><code class="descname">epoch_to_datetime</code><span class="sig-paren">(</span><em>epoch_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#epoch_to_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.epoch_to_datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a UNIX epoch timestamp to a python DateTime object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epoch_seconds</strong> – A UNIX epoch value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Python DateTime representation of the epoch value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">DateTime</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Sean Whalen
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
