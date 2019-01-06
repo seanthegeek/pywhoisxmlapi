@@ -128,18 +128,13 @@ class WhoisXMLAPI(object):
             response = self._session.get(endpoint, params=params)
         logging.debug("Response {0}".format(response.content))
         response.raise_for_status()
-        redacted_endpoint = response.url
         if "callback" in params.keys() and params["callback"]:
             parse_json = False
-            redacted_endpoint = redacted_endpoint.replace(
-                quote(self._api_key.encode("utf-8")), "REDACTED")
         if parse_json:
             response = response.json()
             if "ErrorMessage" in response:
-                error = response["ErrorMessage"]
-                raise WhoisXMLAPIError(
-                    "{0}\nAttempted query: {1}".format(error["msg"],
-                                                       redacted_endpoint))
+                error = response["ErrorMessage"]["msg"]
+                raise WhoisXMLAPIError(error)
         else:
             response = response.text
 
@@ -359,11 +354,6 @@ class WhoisXMLAPI(object):
 
         params["basicSearchTerms"] = dict(include=terms,
                                           exclude=exclude_terms)
-
-        balance = None
-        # balance = self.get_account_balances()["reverse_whois_balance"]
-        if balance is None:
-            balance = 0
 
         results = self._request(endpoint, params, post=True)
         drs_credit_cost = 1

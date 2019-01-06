@@ -10,7 +10,7 @@ Usage:
   whois.py [-d | --debug] [--verbose] <domain> [--output=<output_file>]
   whois.py bulk [-d | --debug] (<domain>... | --input <input_file>) [--csv] [--output=<output_file>]
   whois.py reverse [-d | --debug] [-p | --purchase] [--historic] <term>... [--exclude <exclude_term>... --since=<since> --days-back=<days_back> --output=<output_file>]
-  whois.py history [-d | --debug] [-p | --purchase] <domain> --since=<since>  --output=<output_file>]
+  whois.py history [-d | --debug] [-p | --purchase] <domain> [--since=<since>  --output=<output_file>]
   whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
   whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since>  --output=<output_file>]
   whois.py mx [-d | --debug] [--verbose] <mx> [--output=<output_file>]
@@ -57,7 +57,7 @@ See the License for the specific language governing permissions and
 limitations under the License."""
 
 
-if __name__ == '__main__':
+def _main():
     logger = logging.getLogger()
     arguments = docopt(__doc__, version=__version__)
     if arguments["--debug"]:
@@ -81,47 +81,59 @@ if __name__ == '__main__':
                     results = results["csv"]
                 else:
                     results = results["structured"]
+                    results = dict(results=results)
     elif arguments["reverse"]:
         results = api.reverse_whois(arguments["<term>"],
                                     exclude_terms=arguments["<exclude_term>"],
                                     search_type=search_type,
                                     mode=mode)
     elif arguments["history"]:
-        results = api.whois_history(arguments["<domain>"],
+        results = api.whois_history(arguments["<domain>"][0],
                                     since_date=arguments["--since"],
                                     mode=mode)
+        if arguments["--purchase"]:
+            results = dict(results=results)
+
     elif arguments["brand"]:
         results = api.brand_alert(arguments["<term>"],
                                   exclude_terms=arguments["<exclude_term>"],
                                   since_date=arguments["--since"],
                                   mode=mode)
+        if arguments["--purchase"]:
+            results = dict(results=results)
     elif arguments["registrant"]:
         results = api.registrant_alert(
             arguments["<term>"],
             exclude_terms=arguments["<exclude_term>"],
             since_date=arguments["--since"], mode=mode)
+        if arguments["--purchase"]:
+            results = dict(results=results)
+    elif arguments["mx"]:
+        results = api.reverse_mx(arguments["<mx>"][0])
+    elif arguments["ns"]:
+        results = api.reverse_mx(arguments["<ns>"][0])
     elif arguments["balances"]:
         results = api.get_account_balances()
     else:
+        # The default action is a WHOIS lookup
         thin_whois = True
         if arguments["--verbose"]:
             thin_whois = False
         results = api.whois(arguments["<domain>"][0], thin_whois=thin_whois)
+
+    # Format output
+    if type(results) is dict:
+        results = json.dumps(results, indent=2,
+                             ensure_ascii=False)
+    elif type(results) is list:
+        results = "\n".join(results)
     if arguments["--output"]:
         filename = arguments["--output"]
         with open(filename, "wb") as output_file:
-            if arguments["--purchase"]:
-                output_file.write(
-                    "\n".join(results["domainsList"]).encode("utf-8"))
-            elif arguments["--csv"]:
-                output_file.write(results.encode("utf-8"))
-            else:
-                output_file.write(json.dumps(results,
-                                             indent=2,
-                                             ensure_ascii=False
-                                             ).encode("utf-8"))
+            output_file.write(results.encode("utf-8"))
     else:
-        if arguments["--csv"]:
-            print(results)
-        else:
-            print(json.dumps(results, indent=2, ensure_ascii=False))
+        print(results)
+
+
+if __name__ == '__main__':
+    _main()
