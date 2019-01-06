@@ -13,8 +13,9 @@ Usage:
   whois.py history [-d | --debug] [-p | --purchase] <domain> [--since=<since>  [-o | --output=<output_file>]]
   whois.py brand [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since> [--csv]  [-o | --output=<output_file>]]
   whois.py registrant [-d | --debug] [-p | --purchase] <term>... [--exclude <exclude_term>... --since=<since> [--csv] [-o |--output=<output_file>]]
-  whois.py mx [-d | --debug] [--verbose] <mx> [--csv] [-o | --output=<output_file>]
-  whois.py ns [-d | --debug] [--verbose] <ns> [--csv] [-o | --output=<output_file>]
+  whois.py reverse-ip [-d | --debug] [--verbose] <ip> [--csv] [-o | --output=<output_file>]
+  whois.py reverse-mx [-d | --debug] [--verbose] <mx> [--csv] [-o | --output=<output_file>]
+  whois.py reverse-ns [-d | --debug] [--verbose] <ns> [--csv] [-o | --output=<output_file>]
   whois.py -h | --help
   whois.py --version
 
@@ -35,8 +36,8 @@ Options:
 from __future__ import print_function, unicode_literals
 
 import logging
-import json
-from io import BytesIO
+import jsonplus as json
+from io import StringIO
 from csv import DictWriter
 
 from docopt import docopt
@@ -62,6 +63,7 @@ limitations under the License."""
 def _main():
     logger = logging.getLogger()
     arguments = docopt(__doc__, version=__version__)
+    json.prefer_compat()
     if arguments["--debug"]:
         logger.setLevel(logging.DEBUG)
     logging.debug(arguments)
@@ -104,12 +106,12 @@ def _main():
 
         if arguments["--purchase"]:
             if arguments["--csv"]:
-                csv_str = BytesIO()
+                csv_str = StringIO(newline="\n")
                 fields = ["domainName", "action"]
                 writer = DictWriter(csv_str, fields)
                 writer.writeheader()
                 writer.writerows(results)
-                results = csv_str.read()
+                results = csv_str.getvalue()
             else:
                 results = dict(results=results)
     elif arguments["registrant"]:
@@ -119,32 +121,47 @@ def _main():
             since_date=arguments["--since"], mode=mode)
         if arguments["--purchase"]:
             if arguments["--csv"]:
-                csv_str = BytesIO()
+                csv_str = StringIO(newline="\n")
                 fields = ["domainName", "action"]
                 writer = DictWriter(csv_str, fields)
                 writer.writeheader()
                 writer.writerows(results)
-                results = csv_str.read()
+                results = csv_str.getvalue()
             else:
                 results = dict(results=results)
-    elif arguments["mx"]:
-        results = api.reverse_mx(arguments["<mx>"][0])
+    elif arguments["reverse-ip"]:
+        results = api.reverse_ip(arguments["<ip>"])
         if arguments["--csv"]:
-            csv_str = BytesIO()
+            csv_str = StringIO(newline="\n")
             fields = ["name", "first_seen", "last_visit"]
             writer = DictWriter(csv_str, fields)
             writer.writeheader()
             writer.writerows(results)
-            results = csv_str.read()
-    elif arguments["ns"]:
-        results = api.reverse_mx(arguments["<ns>"][0])
+            results = csv_str.getvalue()
+        else:
+            results = dict(results=results)
+    elif arguments["reverse-mx"]:
+        results = api.reverse_mx(arguments["<mx>"])
         if arguments["--csv"]:
-            csv_str = BytesIO()
+            csv_str = StringIO(newline="\n")
             fields = ["name", "first_seen", "last_visit"]
             writer = DictWriter(csv_str, fields)
             writer.writeheader()
             writer.writerows(results)
-            results = csv_str.read()
+            results = csv_str.getvalue()
+        else:
+            results = dict(results=results)
+    elif arguments["reverse-ns"]:
+        results = api.reverse_ns(arguments["<ns>"])
+        if arguments["--csv"]:
+            csv_str = StringIO(newline="\n")
+            fields = ["name", "first_seen", "last_visit"]
+            writer = DictWriter(csv_str, fields)
+            writer.writeheader()
+            writer.writerows(results)
+            results = csv_str.getvalue()
+        else:
+            results = dict(results=results)
     elif arguments["balances"]:
         results = api.get_account_balances()
     else:
@@ -161,16 +178,12 @@ def _main():
     elif type(results) is list:
         results = "\n".join(results)
     if arguments["--output"]:
-        filename = arguments["--output"]
-        with open(filename, "wb") as output_file:
-            output_file.write(results.encode("utf-8"))
+        filename = arguments["--output"][0]
+        with open(filename, "w", newline="\n") as output_file:
+            output_file.write(results)
     else:
         print(results)
 
 
 if __name__ == '__main__':
-    try:
-        _main()
-    except Exception as e:
-        logging.error(e.__str__())
-        exit(1)
+    _main()

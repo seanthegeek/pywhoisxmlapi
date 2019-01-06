@@ -106,3 +106,5 @@ ENV/
 
 # Test IO
 output/
+*.json
+*.csv
