@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - '3.4'
+  - '3.5'
+  - '3.6'
+
+install:
+  - "pip install -r requirements.txt"
+
+script:
+  - "flake8 *.py scripts/*.py"
+  - "rstcheck --report warning README.rst"
+  - "cd docs"
+  - "make html"
+  - "cd .."
+  - "python setup.py install"
+  - "python setup.py sdist"
+  - "python setup.py bdist_wheel"

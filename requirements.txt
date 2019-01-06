@@ -1,0 +1,8 @@
+requests
+docopt
+jsonplus
+flake8
+sphinx
+sphinx_rtd_theme
+wheel
+rstcheck>=3.3.1
