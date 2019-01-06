@@ -97,5 +97,3 @@ setup(
     # Install whois.py in the system PATH
     scripts=['scripts/whois.py'],
 )
-
-
