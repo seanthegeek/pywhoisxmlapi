@@ -23,7 +23,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -304,17 +304,17 @@ class WhoisXMLAPI(object):
             search_type (str): current or historic
             mode (str): preview or purchase
             created_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             created_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             updated_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             updated_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             expired_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                    given date (``YYYY-MM-DD`` format)
             expired_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
 
         Returns:
             dict: A dictionary of preview data
@@ -377,19 +377,19 @@ class WhoisXMLAPI(object):
         Args:
             domain (str): The domain
             since_date (str): Only return domains created or deleted since
-            this date, (``YYYY-MM-DD`` format)
+                              this date, (``YYYY-MM-DD`` format)
             created_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             created_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             updated_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             updated_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             expired_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                    given date (``YYYY-MM-DD`` format)
             expired_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             mode (str): ``preview`` or ``purchase``
 
         Returns:
@@ -444,22 +444,20 @@ class WhoisXMLAPI(object):
         Args:
             terms (list): Brand terms to include in the search (max 4)
             exclude_terms (list): Terms to exclude (max 4)
-            since_date (str): Only return domains created or deleted since this
-            date, in YYYY-MM-DD format
-            Allowed dates are in the [Today minus 14 days — Today] interval.
-            Yesterday's date by default.
+            since_date (str): Only return domains created or deleted since
+                              this date, (``YYYY-MM-DD`` format)
             created_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             created_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             updated_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             updated_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             expired_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                    given date (``YYYY-MM-DD`` format)
             expired_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             mode (str): ``preview`` or ``purchase``
 
         Returns:
@@ -523,19 +521,19 @@ class WhoisXMLAPI(object):
             terms (list): Brand terms to include in the search (max 4)
             exclude_terms (list): Terms to exclude (max 4)
             since_date (str): Only return domains created or deleted since
-            this date, (``YYYY-MM-DD`` format)
+                              this date, (``YYYY-MM-DD`` format)
             created_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             created_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             updated_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                   given date (``YYYY-MM-DD`` format)
             updated_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             expired_date_to (str): Search through domains created before the
-            given date (``YYYY-MM-DD`` format)
+                                    given date (``YYYY-MM-DD`` format)
             expired_date_from (str): Search through domains created after the
-            given date (``YYYY-MM-DD`` format)
+                                     given date (``YYYY-MM-DD`` format)
             mode (str): ``preview`` or ``purchase``
 
         Returns:

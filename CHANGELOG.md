@@ -1,5 +1,11 @@
+2.0.1
+-----
+
+- Fix documentation formatting
+
+
 2.0.0
-------
+-----
 
 - Fix requests compatibility
 - Use correct HTTP API endpoint for registrant alerts
@@ -7,8 +13,9 @@
 - Add the following subcommands to the CLI:
   - `history`
   - `registrant`
-  - `mx`
-  - `ns`
+  - `reverse-ip`
+  - `reverse-mx`
+  - `reverse-ns`
 
 1.0.1
 -----

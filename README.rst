@@ -6,6 +6,16 @@ pywhoisxmlapi
 
 An unofficial client for WhoisXMLAPI
 
+Features
+========
+
+- Python 2 and 3 support
+- ``whois.py`` CLI utility for common queries
+  with JSON and CSV output
+- Pythonic access to every WhoisXMLAPI service
+
+CLI help
+========
 
 ::
 
@@ -37,6 +47,11 @@ An unofficial client for WhoisXMLAPI
       --csv                        Output in CSV format
       --verbose                    Return verbose data
       --version                    Show version
+
+.. note::
+
+    The ``whois.py`` CLI utility expects the API key to be stored in an
+    environment variable called ``WHOIS_KEY``.
 
 .. |Build Status| image:: https://travis-ci.org/seanthegeek/pywhoisxmlapi.svg?branch=master
    :target: https://travis-ci.org/seanthegeek/pywhoisxmlapi
