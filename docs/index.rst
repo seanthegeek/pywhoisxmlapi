@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-=================================================================
-pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI
-=================================================================
+===========================
+pywhoisxmlapi documentation
+===========================
 
 |Build Status|
 
