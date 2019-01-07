@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.1 documentation</title>
+  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.2 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                2.0.1
+                2.0.2
               </div>
             
           
@@ -168,7 +168,7 @@
 <span class="sd">See the License for the specific language governing permissions and</span>
 <span class="sd">limitations under the License.&quot;&quot;&quot;</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.1&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.2&quot;</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
         <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
@@ -739,7 +739,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            domain_name (str): The domain name or sub-domain to lookup</span>
 <span class="sd">            record_type (str): The DNS resource record type to query for, or</span>
-<span class="sd">            ``_all`` for all record types</span>
+<span class="sd">                              ``_all`` for all record types</span>
 <span class="sd">            callback (str): A JSONP callback</span>
 
 <span class="sd">        Returns:</span>
@@ -905,9 +905,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            domain (str): The domain to check</span>
 <span class="sd">            mode (str):  ``fast`` - some heavy tests and data collectors will</span>
-<span class="sd">            be disabled (1 credit)</span>
-<span class="sd">            or  ``full`` - all the data and the tests will be processed</span>
-<span class="sd">            (3 credits)</span>
+<span class="sd">                          be disabled (1 credit) or</span>
+<span class="sd">                          ``full`` - all the data and the tests will be</span>
+<span class="sd">                          processed (3 credits)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: A number ranging from 0.0 being most malicious to 100.0</span>
