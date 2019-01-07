@@ -308,7 +308,7 @@ class WhoisXMLAPI(object):
             terms (list): Terms to search for
             exclude_terms (list): Terms to filter by
             search_type (str): ``current`` or ``historic``
-            mode (str): ``preview``` or ``purchase``
+            mode (str): ``preview`` or ``purchase``
             created_date_to (str): Search through domains created before the
                                    given date (``YYYY-MM-DD`` format)
             created_date_from (str): Search through domains created after the
