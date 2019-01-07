@@ -23,7 +23,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.0.1"
+__version__ = "2.0.2"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -594,7 +594,7 @@ class WhoisXMLAPI(object):
         Args:
             domain_name (str): The domain name or sub-domain to lookup
             record_type (str): The DNS resource record type to query for, or
-            ``_all`` for all record types
+                              ``_all`` for all record types
             callback (str): A JSONP callback
 
         Returns:
@@ -760,9 +760,9 @@ class WhoisXMLAPI(object):
         Args:
             domain (str): The domain to check
             mode (str):  ``fast`` - some heavy tests and data collectors will
-            be disabled (1 credit)
-            or  ``full`` - all the data and the tests will be processed
-            (3 credits)
+                          be disabled (1 credit) or
+                          ``full`` - all the data and the tests will be
+                          processed (3 credits)
 
         Returns:
             float: A number ranging from 0.0 being most malicious to 100.0
