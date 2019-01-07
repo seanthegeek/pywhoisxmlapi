@@ -1,4 +1,4 @@
-.. parsedmarc documentation master file, created by
+.. pywhoisxmlapi documentation master file, created by
    sphinx-quickstart on Mon Feb  5 18:25:39 2018.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -8,6 +8,19 @@ pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI
 =================================================================
 
 |Build Status|
+
+An unofficial client for WhoisXMLAPI
+
+Features
+========
+
+- Python 2 and 3 support
+- ``whois.py`` CLI utility for common queries
+  with JSON and CSV output
+- Pythonic access to every WhoisXMLAPI service
+
+CLI help
+========
 
 ::
 
@@ -39,6 +52,50 @@ pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI
       --csv                        Output in CSV format
       --verbose                    Return verbose data
       --version                    Show version
+
+.. note::
+
+    The ``whois.py`` CLI utility expects the API key to be stored in an
+    environment variable called ``WHOIS_KEY``.
+
+Installation
+============
+
+On Debian or Ubuntu systems, run:
+
+.. code-block:: bash
+
+    sudo apt-get install python3-pip
+
+
+On CentOS systems, run:
+
+.. code-block:: bash
+
+   sudo yum install -y python34-setuptools
+   sudo easy_install-3.4 pip
+
+Python 3 installers for Windows and macOS can be found at
+https://www.python.org/downloads/
+
+To install or upgrade to the latest stable release of ``pywhoisxmlapi`` on
+macOS or Linux, run
+
+.. code-block:: bash
+
+    sudo -H pip3 install -U pywhoisxmlapi
+
+Or, install the latest development release directly from GitHub:
+
+.. code-block:: bash
+
+    sudo -H pip3 install -U git+https://github.com/seanthegeek/pywhoisxmlapi.git
+
+.. note::
+
+    On Windows, ``pip3`` is ``pip``, even with Python 3. So on Windows,
+    substitute ``pip`` as an administrator in place of ``sudo pip3``, in the
+    above commands.
 
 API
 ===

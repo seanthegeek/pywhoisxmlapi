@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.0 documentation</title>
+  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.1 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
             
           
@@ -168,7 +168,7 @@
 <span class="sd">See the License for the specific language governing permissions and</span>
 <span class="sd">limitations under the License.&quot;&quot;&quot;</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.0&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.1&quot;</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
         <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
@@ -449,17 +449,17 @@
 <span class="sd">            search_type (str): current or historic</span>
 <span class="sd">            mode (str): preview or purchase</span>
 <span class="sd">            created_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                    given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: A dictionary of preview data</span>
@@ -522,19 +522,19 @@
 <span class="sd">        Args:</span>
 <span class="sd">            domain (str): The domain</span>
 <span class="sd">            since_date (str): Only return domains created or deleted since</span>
-<span class="sd">            this date, (``YYYY-MM-DD`` format)</span>
+<span class="sd">                              this date, (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                    given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            mode (str): ``preview`` or ``purchase``</span>
 
 <span class="sd">        Returns:</span>
@@ -589,22 +589,20 @@
 <span class="sd">        Args:</span>
 <span class="sd">            terms (list): Brand terms to include in the search (max 4)</span>
 <span class="sd">            exclude_terms (list): Terms to exclude (max 4)</span>
-<span class="sd">            since_date (str): Only return domains created or deleted since this</span>
-<span class="sd">            date, in YYYY-MM-DD format</span>
-<span class="sd">            Allowed dates are in the [Today minus 14 days — Today] interval.</span>
-<span class="sd">            Yesterday&#39;s date by default.</span>
+<span class="sd">            since_date (str): Only return domains created or deleted since</span>
+<span class="sd">                              this date, (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                    given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            mode (str): ``preview`` or ``purchase``</span>
 
 <span class="sd">        Returns:</span>
@@ -668,19 +666,19 @@
 <span class="sd">            terms (list): Brand terms to include in the search (max 4)</span>
 <span class="sd">            exclude_terms (list): Terms to exclude (max 4)</span>
 <span class="sd">            since_date (str): Only return domains created or deleted since</span>
-<span class="sd">            this date, (``YYYY-MM-DD`` format)</span>
+<span class="sd">                              this date, (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            created_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                   given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            updated_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_to (str): Search through domains created before the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                    given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            expired_date_from (str): Search through domains created after the</span>
-<span class="sd">            given date (``YYYY-MM-DD`` format)</span>
+<span class="sd">                                     given date (``YYYY-MM-DD`` format)</span>
 <span class="sd">            mode (str): ``preview`` or ``purchase``</span>
 
 <span class="sd">        Returns:</span>

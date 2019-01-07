@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI &mdash; pywhoisxmlapi 2.0.0 documentation</title>
+  <title>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI &mdash; pywhoisxmlapi 2.0.1 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                2.0.0
+                2.0.1
               </div>
             
           
@@ -83,6 +83,9 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI</a><ul>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#cli-help">CLI help</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#module-pywhoisxmlapi">API</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
@@ -154,6 +157,18 @@
   <div class="section" id="pywhoisxmlapi-documentation-an-unoffical-client-for-whoisxmlapi">
 <h1>pywhoisxmlapi documentation - An unoffical client for WhoisXMLAPI<a class="headerlink" href="#pywhoisxmlapi-documentation-an-unoffical-client-for-whoisxmlapi" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://travis-ci.org/seanthegeek/pywhoisxmlapi"><img alt="Build Status" src="https://travis-ci.org/seanthegeek/pywhoisxmlapi.svg?branch=master" /></a></p>
+<p>An unofficial client for WhoisXMLAPI</p>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python 2 and 3 support</li>
+<li><code class="docutils literal notranslate"><span class="pre">whois.py</span></code> CLI utility for common queries
+with JSON and CSV output</li>
+<li>Pythonic access to every WhoisXMLAPI service</li>
+</ul>
+</div>
+<div class="section" id="cli-help">
+<h2>CLI help<a class="headerlink" href="#cli-help" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span> <span class="n">A</span> <span class="n">CLI</span> <span class="k">for</span> <span class="n">WhoisXMLAPI</span>
 
 <span class="n">Usage</span><span class="p">:</span>
@@ -184,6 +199,41 @@
   <span class="o">--</span><span class="n">version</span>                    <span class="n">Show</span> <span class="n">version</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">whois.py</span></code> CLI utility expects the API key to be stored in an
+environment variable called <code class="docutils literal notranslate"><span class="pre">WHOIS_KEY</span></code>.</p>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>On Debian or Ubuntu systems, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get install python3-pip
+</pre></div>
+</div>
+<p>On CentOS systems, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo yum install -y python34-setuptools
+sudo easy_install-3.4 pip
+</pre></div>
+</div>
+<p>Python 3 installers for Windows and macOS can be found at
+<a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p>
+<p>To install or upgrade to the latest stable release of <code class="docutils literal notranslate"><span class="pre">pywhoisxmlapi</span></code> on
+macOS or Linux, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo -H pip3 install -U pywhoisxmlapi
+</pre></div>
+</div>
+<p>Or, install the latest development release directly from GitHub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo -H pip3 install -U git+https://github.com/seanthegeek/pywhoisxmlapi.git
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Windows, <code class="docutils literal notranslate"><span class="pre">pip3</span></code> is <code class="docutils literal notranslate"><span class="pre">pip</span></code>, even with Python 3. So on Windows,
+substitute <code class="docutils literal notranslate"><span class="pre">pip</span></code> as an administrator in place of <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">pip3</span></code>, in the
+above commands.</p>
+</div>
+</div>
 <div class="section" id="module-pywhoisxmlapi">
 <span id="api"></span><h2>API<a class="headerlink" href="#module-pywhoisxmlapi" title="Permalink to this headline">¶</a></h2>
 <p>An unofficial client for WhoisXMLAPI</p>
@@ -202,22 +252,20 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>terms</strong> (<em>list</em>) – Brand terms to include in the search (max 4)</li>
 <li><strong>exclude_terms</strong> (<em>list</em>) – Terms to exclude (max 4)</li>
-<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since this</li>
-<li><strong>in YYYY-MM-DD format</strong> (<em>date</em><em>,</em>) – </li>
-<li><strong>dates are in the</strong><strong> [</strong><strong>Today minus 14 days — Today</strong><strong>] </strong><strong>interval.</strong> (<em>Allowed</em>) – </li>
-<li><strong>date by default.</strong> (<em>Yesterday's</em>) – </li>
-<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> (<em>given</em>) – </li>
-<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since
+this date, (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
 <li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
 </ul>
 </td>
@@ -385,20 +433,20 @@ being most safe</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>terms</strong> (<em>list</em>) – Brand terms to include in the search (max 4)</li>
 <li><strong>exclude_terms</strong> (<em>list</em>) – Terms to exclude (max 4)</li>
-<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since</li>
-<li><strong>date</strong><strong>,</strong> (<em>this</em>) – </li>
-<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> (<em>given</em>) – </li>
-<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since
+this date, (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
 <li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
 </ul>
 </td>
@@ -482,18 +530,18 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 <li><strong>exclude_terms</strong> (<em>list</em>) – Terms to filter by</li>
 <li><strong>search_type</strong> (<em>str</em>) – current or historic</li>
 <li><strong>mode</strong> (<em>str</em>) – preview or purchase</li>
-<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> (<em>given</em>) – </li>
-<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
 </ul>
 </td>
 </tr>
@@ -601,20 +649,20 @@ str: WHOIS data wrapped in JSONP if <code class="docutils literal notranslate"><
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>domain</strong> (<em>str</em>) – The domain</li>
-<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since</li>
-<li><strong>date</strong><strong>,</strong> (<em>this</em>) – </li>
-<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> (<em>given</em>) – </li>
-<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the</li>
-<li><strong>date</strong> – </li>
-<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the</li>
-<li><strong>date</strong> – </li>
+<li><strong>since_date</strong> (<em>str</em>) – Only return domains created or deleted since
+this date, (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>created_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>updated_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_to</strong> (<em>str</em>) – Search through domains created before the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
+<li><strong>expired_date_from</strong> (<em>str</em>) – Search through domains created after the
+given date (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> format)</li>
 <li><strong>mode</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">preview</span></code> or <code class="docutils literal notranslate"><span class="pre">purchase</span></code></li>
 </ul>
 </td>
