@@ -69,6 +69,12 @@ class WhoisXMLAPIError(RuntimeError):
 class WhoisXMLAPI(object):
     """
     A Python interface to WhoisXMLAPI
+
+    .. note::
+
+     ``api_key`` can be overridden by the
+     ``WHOIS_KEY`` environment variable
+    ..
     """
     _root = "https://www.whoisxmlapi.com"
 
