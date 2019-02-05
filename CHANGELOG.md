@@ -2,6 +2,7 @@
 -----
 
 - Fix bulk WHOIS
+- Add netblocks API
 
 2.0.2
 -----
