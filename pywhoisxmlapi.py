@@ -800,7 +800,7 @@ class WhoisXMLAPI(object):
         Returns netblock information about a given IP or organisation
 
         .. note::
-        You must specify ``ip`` or ``org``, but not both
+            You must specify ``ip`` or ``org``, but not both
 
         Args:
             ip (str): An IP address
