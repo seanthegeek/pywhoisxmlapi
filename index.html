@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi documentation &mdash; pywhoisxmlapi 2.0.2 documentation</title>
+  <title>pywhoisxmlapi documentation &mdash; pywhoisxmlapi 2.0.3 documentation</title>
   
 
   
@@ -56,7 +56,7 @@
             
             
               <div class="version">
-                2.0.2
+                2.0.3
               </div>
             
           
@@ -422,6 +422,36 @@ being most safe</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Geolocation information</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pywhoisxmlapi.WhoisXMLAPI.netblocks">
+<code class="descname">netblocks</code><span class="sig-paren">(</span><em>ip=None</em>, <em>mask=None</em>, <em>org=None</em>, <em>limit=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.netblocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.netblocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns netblock information about a given IP or organisation</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You must specify <code class="docutils literal notranslate"><span class="pre">ip</span></code> or <code class="docutils literal notranslate"><span class="pre">org</span></code>, but not both</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ip</strong> (<em>str</em>) – An IP address</li>
+<li><strong>mask</strong> (<em>int</em>) – A subnet bask integer</li>
+<li><strong>org</strong> (<em>list</em>) – A list os organisation strings</li>
+<li><strong>limit</strong> (<em>int</em>) – Max number of records to return (1-10000)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of netblocks</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
 </tr>
 </tbody>
 </table>
