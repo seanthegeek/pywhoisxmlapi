@@ -108,3 +108,4 @@ ENV/
 output/
 *.json
 *.csv
+scripts/*.txt

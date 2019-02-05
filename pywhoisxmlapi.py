@@ -23,7 +23,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -282,7 +282,7 @@ class WhoisXMLAPI(object):
 
         for result in structured:
             result["domainFetchedTime"] = epoch_to_datetime(
-                result["domainFetchedTime"])
+                float(result["domainFetchedTime"]) / 1000)
 
         endpoint = "https://www.whoisxmlapi.com/BulkWhoisLookup/" \
                    "bulkServices/download"
@@ -794,3 +794,25 @@ class WhoisXMLAPI(object):
         params = dict(ipAddress=ip)
 
         return self._request(endpoint, params)["location"]
+
+    def netblocks(self, ip=None, mask=None, org=None, limit=10000):
+        """
+        Returns netblock information about a given IP or organisation
+
+        .. note::
+        You must specify ``ip`` or ``org``, but not both
+
+        Args:
+            ip (str): An IP address
+            mask (int): A subnet bask integer
+            org (list): A list os organisation strings
+            limit (int): Max number of records to return (1-10000)
+
+        Returns:
+            list: A list of netblocks
+        """
+        if (not ip and not org) or (ip and org):
+            raise ValueError("ip or org must be specified")
+        params = dict(ip=ip, mask=mask, org=org, limit=limit)
+        endpoint = "https://ip-netblocks-api.whoisxmlapi.com/api/v1"
+        return self._request(endpoint, params)

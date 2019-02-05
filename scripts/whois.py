@@ -77,7 +77,7 @@ def _main():
         mode = "purchase"
     if arguments["bulk"]:
         if arguments["--input"]:
-            with open(arguments["--input"]) as input_file:
+            with open(arguments["--input"][0]) as input_file:
                 domains = list(map(lambda line: line.rstrip(),
                                    input_file.readlines()))
                 results = api.bulk_whois(domains)
@@ -179,7 +179,8 @@ def _main():
         results = "\n".join(results)
     if arguments["--output"]:
         filename = arguments["--output"][0]
-        with open(filename, "w", newline="\n") as output_file:
+        with open(filename, "w", encoding="utf-8", errors="ignore",
+                  newline="\n") as output_file:
             output_file.write(results)
     else:
         print(results)
