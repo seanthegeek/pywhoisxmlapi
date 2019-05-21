@@ -25,7 +25,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -127,7 +127,7 @@ def whois_to_csv(whois_results):
               'registrant_street1', 'registrant_street2', 'registrant_city',
               'registrant_state', 'registrant_postalCode',
               'registrant_country', 'registrant_countryCode',
-              'registrant_email', 'registrant_telephone',
+              'registrant_email', 'registrant_telephone', 'registrant_fax',
               'administrativeContact_name',
               'administrativeContact_organization',
               'administrativeContact_street1',
@@ -139,6 +139,7 @@ def whois_to_csv(whois_results):
               'administrativeContact_countryCode',
               'administrativeContact_email',
               'administrativeContact_telephone',
+              'administrativeContact_fax',
               'technicalContact_name',
               'technicalContact_organization',
               'technicalContact_street1', 'technicalContact_street2',
@@ -149,6 +150,7 @@ def whois_to_csv(whois_results):
               'technicalContact_countryCode',
               'technicalContact_email',
               'technicalContact_telephone',
+              'technicalContact_fax',
               'nameServers',
               'status',
               'registrarName',

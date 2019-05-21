@@ -1,3 +1,8 @@
+2.1.1
+-----
+
+- Fix CSV output of WHOIS records with fax fields
+
 2.1.0
 -----
 
