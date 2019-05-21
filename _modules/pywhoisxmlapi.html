@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.0.3 documentation</title>
+  <title>pywhoisxmlapi &mdash; pywhoisxmlapi 2.1.1 documentation</title>
   
 
   
@@ -17,32 +17,34 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -56,7 +58,7 @@
             
             
               <div class="version">
-                2.0.3
+                2.1.1
               </div>
             
           
@@ -151,6 +153,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+<span class="kn">from</span> <span class="nn">csv</span> <span class="k">import</span> <span class="n">DictWriter</span>
 
 <span class="kn">from</span> <span class="nn">requests</span> <span class="k">import</span> <span class="n">session</span>
 
@@ -168,7 +172,7 @@
 <span class="sd">See the License for the specific language governing permissions and</span>
 <span class="sd">limitations under the License.&quot;&quot;&quot;</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.0.3&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2.1.1&quot;</span>
 
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
         <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> [</span><span class="si">%(levelname)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
@@ -209,6 +213,105 @@
 <span class="sd">    Raised when an error is returned by WhoisXMLAPI</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="flatten_whois"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.flatten_whois">[docs]</a><span class="k">def</span> <span class="nf">flatten_whois</span><span class="p">(</span><span class="n">whois_record</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Flattens a whois record result</span>
+<span class="sd">    Args:</span>
+<span class="sd">        whois_record (dict): A WHOIS record</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A flattened WHOIS result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat_whois</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;domainName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;domainName&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;createdDate&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;createdDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;createdDate&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;updatedDate&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;updatedDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;updatedDate&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;expiresDate&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;expiresDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;expiresDate&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;registrant&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;registrant&quot;</span><span class="p">]:</span>
+            <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;registrant_</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;registrant&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;registrant_rawText&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;administrativeContact&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;administrativeContact&quot;</span><span class="p">]:</span>
+            <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;administrativeContact_</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;administrativeContact&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;administrativeContact_rawText&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;technicalContact&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;technicalContact&quot;</span><span class="p">]:</span>
+            <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;technicalContact_</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;technicalContact&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;technicalContact_rawText&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;nameServers&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;nameServers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;nameServers&quot;</span><span class="p">][</span><span class="s2">&quot;hostNames&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">&quot;status&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;registrarName&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;registrarName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;registrarName&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;estimatedDomainAge&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;estimatedDomainAge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;estimatedDomainAge&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;ips&quot;</span> <span class="ow">in</span> <span class="n">whois_record</span><span class="p">:</span>
+        <span class="n">flat_whois</span><span class="p">[</span><span class="s2">&quot;ips&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">whois_record</span><span class="p">[</span><span class="s2">&quot;ips&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">flat_whois</span></div>
+
+
+<div class="viewcode-block" id="whois_to_csv"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.whois_to_csv">[docs]</a><span class="k">def</span> <span class="nf">whois_to_csv</span><span class="p">(</span><span class="n">whois_results</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns CSV content given a list of WHOIS results</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        whois_results (list): A list of WHOIS results</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: results as a CSV string</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;domainName&#39;</span><span class="p">,</span> <span class="s1">&#39;createdDate&#39;</span><span class="p">,</span> <span class="s1">&#39;updatedDate&#39;</span><span class="p">,</span> <span class="s1">&#39;expiresDate&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrant_name&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_organization&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrant_street1&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_street2&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_city&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrant_state&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_postalCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrant_country&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_countryCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrant_email&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_telephone&#39;</span><span class="p">,</span> <span class="s1">&#39;registrant_fax&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_name&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_organization&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_street1&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_street2&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_city&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_state&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_postalCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_country&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_countryCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_email&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_telephone&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;administrativeContact_fax&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_name&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_organization&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_street1&#39;</span><span class="p">,</span> <span class="s1">&#39;technicalContact_street2&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_city&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_state&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_postalCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_country&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_countryCode&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_email&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_telephone&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;technicalContact_fax&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;nameServers&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;status&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;registrarName&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;estimatedDomainAge&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;ips&#39;</span><span class="p">]</span>
+
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="n">newline</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">DictWriter</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+    <span class="n">whois_results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">flatten_whois</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">whois_results</span><span class="p">))</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">whois_results</span><span class="p">)</span>
+    <span class="n">output_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="WhoisXMLAPI"><a class="viewcode-back" href="../index.html#pywhoisxmlapi.WhoisXMLAPI">[docs]</a><span class="k">class</span> <span class="nc">WhoisXMLAPI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -990,26 +1093,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
