@@ -6,6 +6,8 @@ import os
 import time
 import logging
 from datetime import datetime
+from io import StringIO
+from csv import DictWriter
 
 from requests import session
 
@@ -23,7 +25,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.0.3"
+__version__ = "2.1.0"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -65,6 +67,102 @@ class WhoisXMLAPIError(RuntimeError):
     """
     pass
 
+
+def flatten_whois(whois_record):
+    """
+    Flattens a whois record result
+    Args:
+        whois_record (dict): A WHOIS record
+
+    Returns:
+        dict: A flattened WHOIS result
+    """
+    flat_whois = dict()
+    flat_whois["domainName"] = whois_record["domainName"]
+    if "createdDate" in whois_record:
+        flat_whois["createdDate"] = whois_record["createdDate"]
+    if "updatedDate" in whois_record:
+        flat_whois["updatedDate"] = whois_record["updatedDate"]
+    if "expiresDate" in whois_record:
+        flat_whois["expiresDate"] = whois_record["expiresDate"]
+    if "registrant" in whois_record:
+        for key in whois_record["registrant"]:
+            flat_whois["registrant_{0}".format(key)] = whois_record["registrant"][key]
+        del flat_whois["registrant_rawText"]
+    if "administrativeContact" in whois_record:
+        for key in whois_record["administrativeContact"]:
+            flat_whois["administrativeContact_{0}".format(key)] = whois_record["administrativeContact"][key]
+        del flat_whois["administrativeContact_rawText"]
+    if "technicalContact" in whois_record:
+        for key in whois_record["technicalContact"]:
+            flat_whois["technicalContact_{0}".format(key)] = whois_record["technicalContact"][key]
+        del flat_whois["technicalContact_rawText"]
+    if "nameServers" in whois_record:
+        flat_whois["nameServers"] = "|".join(whois_record["nameServers"]["hostNames"])
+    if "status" in whois_record:
+        flat_whois["status"] = whois_record["status"]
+    if "registrarName" in whois_record:
+        flat_whois["registrarName"] = whois_record["registrarName"]
+    if "estimatedDomainAge" in whois_record:
+        flat_whois["estimatedDomainAge"] = whois_record["estimatedDomainAge"]
+    if "ips" in whois_record:
+        flat_whois["ips"] = "|".join(whois_record["ips"])
+
+    return flat_whois
+
+
+def whois_to_csv(whois_results):
+    """
+    Returns CSV content given a list of WHOIS results
+
+    Args:
+        whois_results (list): A list of WHOIS results
+
+    Returns:
+        str: results as a CSV string
+
+    """
+    fields = ['domainName', 'createdDate', 'updatedDate', 'expiresDate',
+              'registrant_name', 'registrant_organization',
+              'registrant_street1', 'registrant_street2', 'registrant_city',
+              'registrant_state', 'registrant_postalCode',
+              'registrant_country', 'registrant_countryCode',
+              'registrant_email', 'registrant_telephone',
+              'administrativeContact_name',
+              'administrativeContact_organization',
+              'administrativeContact_street1',
+              'administrativeContact_street2',
+              'administrativeContact_city',
+              'administrativeContact_state',
+              'administrativeContact_postalCode',
+              'administrativeContact_country',
+              'administrativeContact_countryCode',
+              'administrativeContact_email',
+              'administrativeContact_telephone',
+              'technicalContact_name',
+              'technicalContact_organization',
+              'technicalContact_street1', 'technicalContact_street2',
+              'technicalContact_city',
+              'technicalContact_state',
+              'technicalContact_postalCode',
+              'technicalContact_country',
+              'technicalContact_countryCode',
+              'technicalContact_email',
+              'technicalContact_telephone',
+              'nameServers',
+              'status',
+              'registrarName',
+              'estimatedDomainAge',
+              'ips']
+
+    output_file = StringIO(newline="\n")
+    writer = DictWriter(output_file, fieldnames=fields)
+    writer.writeheader()
+    whois_results = list(map(lambda x: flatten_whois(x), whois_results))
+    writer.writerows(whois_results)
+    output_file.seek(0)
+
+    return output_file.read()
 
 class WhoisXMLAPI(object):
     """

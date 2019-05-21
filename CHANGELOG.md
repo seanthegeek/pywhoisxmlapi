@@ -1,3 +1,8 @@
+2.1.0
+-----
+
+- Add `flatten_whois()` and `whois_to_csv()`
+
 2.0.3
 -----
 
