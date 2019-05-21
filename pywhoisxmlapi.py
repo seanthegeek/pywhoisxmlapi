@@ -164,6 +164,7 @@ def whois_to_csv(whois_results):
 
     return output_file.read()
 
+
 class WhoisXMLAPI(object):
     """
     A Python interface to WhoisXMLAPI
