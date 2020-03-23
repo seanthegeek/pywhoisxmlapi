@@ -1,3 +1,8 @@
+2.1.5
+-----
+
+- Fix reverse WHOIS preview
+
 2.1.4
 -----
 
@@ -5,6 +10,7 @@
 
 2.1.3
 -----
+
 - Output purchased reverse WHOIS searches as a simple list of domains instead of JSON
 
 2.1.2

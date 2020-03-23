@@ -92,7 +92,7 @@ def _main():
                                     search_type=search_type,
                                     mode=mode)
         if arguments["--purchase"]:
-            results = results["domainList"]
+            results = results["domainsList"]
 
     elif arguments["history"]:
         results = api.whois_history(arguments["<domain>"][0],
