@@ -25,7 +25,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.1.3"
+__version__ = "2.1.4"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'

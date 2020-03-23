@@ -90,7 +90,10 @@ def _main():
         results = api.reverse_whois(arguments["<term>"],
                                     exclude_terms=arguments["<exclude_term>"],
                                     search_type=search_type,
-                                    mode=mode)["domainsList"]
+                                    mode=mode)
+        if arguments["--purchase"]:
+            results = results["domainList"]
+
     elif arguments["history"]:
         results = api.whois_history(arguments["<domain>"][0],
                                     since_date=arguments["--since"],
