@@ -1,3 +1,8 @@
+2.1.2
+-----
+
+- Fix historic reverse WHOIS searches
+
 2.1.1
 -----
 

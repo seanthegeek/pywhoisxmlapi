@@ -25,7 +25,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.1.1"
+__version__ = "2.1.2"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
@@ -428,7 +428,7 @@ class WhoisXMLAPI(object):
             list: A list of results
         """
         endpoint = "https://reverse-whois-api.whoisxmlapi.com/api/v2"
-        params = dict(search_type=search_type.lower(), mode=mode.lower())
+        params = dict(mode=mode.lower())
         if created_date_to:
             params["createdDateTo"] = created_date_to
         if created_date_from:
@@ -456,6 +456,7 @@ class WhoisXMLAPI(object):
         if mode not in ["preview", "purchase"]:
             raise ValueError("mode must be preview or purchase")
 
+        params["searchType"] = search_type
         params["basicSearchTerms"] = dict(include=terms,
                                           exclude=exclude_terms)
 
