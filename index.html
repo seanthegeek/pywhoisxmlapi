@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pywhoisxmlapi documentation &mdash; pywhoisxmlapi 2.1.1 documentation</title>
+  <title>pywhoisxmlapi documentation &mdash; pywhoisxmlapi 2.1.5 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                2.1.1
+                2.1.5
               </div>
             
           
@@ -176,7 +176,7 @@ with JSON and CSV output</p></li>
 <span class="n">Usage</span><span class="p">:</span>
   <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">balances</span>
   <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
-  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">bulk</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;...</span> <span class="o">|</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="o">|--</span><span class="nb">input</span> <span class="o">&lt;</span><span class="n">input_file</span><span class="o">&gt;</span><span class="p">])</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span> <span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
+  <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">bulk</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">input_file</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span> <span class="p">[</span> <span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]</span>
   <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">reverse</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">historic</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">term</span><span class="o">&gt;...</span> <span class="p">[</span><span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">exclude_term</span><span class="o">&gt;...</span> <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">days</span><span class="o">-</span><span class="n">back</span><span class="o">=&lt;</span><span class="n">days_back</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
   <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">history</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">domain</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span>  <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
   <span class="n">whois</span><span class="o">.</span><span class="n">py</span> <span class="n">brand</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="o">|</span> <span class="o">--</span><span class="n">debug</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="o">|</span> <span class="o">--</span><span class="n">purchase</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">term</span><span class="o">&gt;...</span> <span class="p">[</span><span class="o">--</span><span class="n">exclude</span> <span class="o">&lt;</span><span class="n">exclude_term</span><span class="o">&gt;...</span> <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">--</span><span class="n">csv</span><span class="p">]</span>  <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="o">|</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span><span class="p">]]</span>
@@ -190,7 +190,7 @@ with JSON and CSV output</p></li>
 <span class="n">Options</span><span class="p">:</span>
   <span class="o">-</span><span class="n">h</span> <span class="o">--</span><span class="n">help</span>                    <span class="n">Show</span> <span class="n">this</span> <span class="n">screen</span>
   <span class="o">-</span><span class="n">d</span> <span class="o">--</span><span class="n">debug</span>                   <span class="n">Enable</span> <span class="n">debug</span> <span class="n">output</span>
-  <span class="o">-</span><span class="n">i</span> <span class="o">--</span><span class="nb">input</span><span class="o">=&lt;</span><span class="n">input_file</span><span class="o">&gt;</span>      <span class="n">A</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">one</span> <span class="n">domain</span> <span class="n">per</span> <span class="n">line</span>
+  <span class="o">&lt;</span><span class="n">input_file</span><span class="o">&gt;</span>                 <span class="n">A</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">one</span> <span class="n">domain</span> <span class="n">per</span> <span class="n">line</span>
   <span class="o">-</span><span class="n">o</span> <span class="o">--</span><span class="n">output</span><span class="o">=&lt;</span><span class="n">output_file</span><span class="o">&gt;</span>    <span class="n">Output</span> <span class="n">to</span> <span class="n">a</span> <span class="n">file</span> <span class="k">with</span> <span class="n">this</span> <span class="n">file</span> <span class="n">name</span><span class="p">;</span> <span class="n">the</span> <span class="n">file</span> <span class="n">extension</span> <span class="ow">is</span> <span class="n">added</span> <span class="n">automatically</span>
   <span class="o">-</span><span class="n">p</span> <span class="o">--</span><span class="n">purchase</span>                <span class="n">Purchase</span> <span class="n">the</span> <span class="n">results</span> <span class="k">with</span> <span class="n">a</span> <span class="n">Domain</span> <span class="n">Research</span> <span class="n">Suite</span> <span class="p">(</span><span class="n">DRS</span><span class="p">)</span> <span class="n">credit</span>
   <span class="o">--</span><span class="n">since</span><span class="o">=&lt;</span><span class="n">since</span><span class="o">&gt;</span>              <span class="n">Only</span> <span class="n">include</span> <span class="n">results</span> <span class="n">since</span> <span class="n">this</span> <span class="n">date</span> <span class="n">YYY</span><span class="o">-</span><span class="n">MM0DD</span> <span class="nb">format</span>
@@ -241,7 +241,7 @@ above commands.</p>
 <p>An unofficial client for WhoisXMLAPI</p>
 <dl class="class">
 <dt id="pywhoisxmlapi.WhoisXMLAPI">
-<em class="property">class </em><code class="descclassname">pywhoisxmlapi.</code><code class="descname">WhoisXMLAPI</code><span class="sig-paren">(</span><em>api_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">WhoisXMLAPI</code><span class="sig-paren">(</span><em class="sig-param">api_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Python interface to WhoisXMLAPI</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -250,7 +250,7 @@ above commands.</p>
 </div>
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.brand_alert">
-<code class="descname">brand_alert</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.brand_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.brand_alert" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">brand_alert</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">exclude_terms=None</em>, <em class="sig-param">since_date=None</em>, <em class="sig-param">created_date_from=None</em>, <em class="sig-param">created_date_to=None</em>, <em class="sig-param">updated_date_from=None</em>, <em class="sig-param">updated_date_to=None</em>, <em class="sig-param">expired_date_from=None</em>, <em class="sig-param">expired_date_to=None</em>, <em class="sig-param">mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.brand_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.brand_alert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists newly created or deleted domains based on brand terms</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -287,7 +287,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.bulk_whois">
-<code class="descname">bulk_whois</code><span class="sig-paren">(</span><em>domains</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.bulk_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.bulk_whois" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bulk_whois</code><span class="sig-paren">(</span><em class="sig-param">domains</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.bulk_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.bulk_whois" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves WHOIS data for multiple domains, in bulk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -311,7 +311,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.dns_lookup">
-<code class="descname">dns_lookup</code><span class="sig-paren">(</span><em>domain_name</em>, <em>record_type='_all'</em>, <em>callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.dns_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.dns_lookup" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dns_lookup</code><span class="sig-paren">(</span><em class="sig-param">domain_name</em>, <em class="sig-param">record_type='_all'</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.dns_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.dns_lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preforms a DNS lookup</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -335,7 +335,7 @@ specified</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.domain_availability">
-<code class="descname">domain_availability</code><span class="sig-paren">(</span><em>domain_name</em>, <em>mode='DNS_ONLY'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_availability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">domain_availability</code><span class="sig-paren">(</span><em class="sig-param">domain_name</em>, <em class="sig-param">mode='DNS_ONLY'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_availability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check domain name availability</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -355,7 +355,7 @@ specified</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.domain_reputation">
-<code class="descname">domain_reputation</code><span class="sig-paren">(</span><em>domain</em>, <em>mode='fast'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_reputation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_reputation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">domain_reputation</code><span class="sig-paren">(</span><em class="sig-param">domain</em>, <em class="sig-param">mode='fast'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.domain_reputation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.domain_reputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks a domain’s reputation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -379,7 +379,7 @@ being most safe</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.get_account_balances">
-<code class="descname">get_account_balances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.get_account_balances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.get_account_balances" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_account_balances</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.get_account_balances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.get_account_balances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all account balances</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -393,7 +393,7 @@ being most safe</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.ip_geolocation">
-<code class="descname">ip_geolocation</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.ip_geolocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.ip_geolocation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ip_geolocation</code><span class="sig-paren">(</span><em class="sig-param">ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.ip_geolocation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.ip_geolocation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns geolocation information about an IP address</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -410,7 +410,7 @@ being most safe</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.netblocks">
-<code class="descname">netblocks</code><span class="sig-paren">(</span><em>ip=None</em>, <em>mask=None</em>, <em>org=None</em>, <em>limit=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.netblocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.netblocks" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">netblocks</code><span class="sig-paren">(</span><em class="sig-param">ip=None</em>, <em class="sig-param">mask=None</em>, <em class="sig-param">org=None</em>, <em class="sig-param">limit=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.netblocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.netblocks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns netblock information about a given IP or organisation</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -436,7 +436,7 @@ being most safe</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.registrant_alert">
-<code class="descname">registrant_alert</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.registrant_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.registrant_alert" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">registrant_alert</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">exclude_terms=None</em>, <em class="sig-param">since_date=None</em>, <em class="sig-param">created_date_from=None</em>, <em class="sig-param">created_date_to=None</em>, <em class="sig-param">updated_date_from=None</em>, <em class="sig-param">updated_date_to=None</em>, <em class="sig-param">expired_date_from=None</em>, <em class="sig-param">expired_date_to=None</em>, <em class="sig-param">mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.registrant_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.registrant_alert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists newly created or deleted domains based on registrant</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -473,7 +473,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_ip">
-<code class="descname">reverse_ip</code><span class="sig-paren">(</span><em>ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ip" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reverse_ip</code><span class="sig-paren">(</span><em class="sig-param">ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a reverse IP/DNS query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -490,7 +490,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_mx">
-<code class="descname">reverse_mx</code><span class="sig-paren">(</span><em>mx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_mx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_mx" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reverse_mx</code><span class="sig-paren">(</span><em class="sig-param">mx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_mx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_mx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a reverse MX query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -507,7 +507,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_ns">
-<code class="descname">reverse_ns</code><span class="sig-paren">(</span><em>ns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reverse_ns</code><span class="sig-paren">(</span><em class="sig-param">ns</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_ns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_ns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a reverse MX query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -524,7 +524,7 @@ and its <code class="docutils literal notranslate"><span class="pre">action</spa
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.reverse_whois">
-<code class="descname">reverse_whois</code><span class="sig-paren">(</span><em>terms</em>, <em>exclude_terms=None</em>, <em>search_type='current'</em>, <em>mode='preview'</em>, <em>created_date_to=None</em>, <em>created_date_from=None</em>, <em>updated_date_to=None</em>, <em>updated_date_from=None</em>, <em>expired_date_to=None</em>, <em>expired_date_from=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_whois" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reverse_whois</code><span class="sig-paren">(</span><em class="sig-param">terms</em>, <em class="sig-param">exclude_terms=None</em>, <em class="sig-param">search_type='current'</em>, <em class="sig-param">mode='preview'</em>, <em class="sig-param">created_date_to=None</em>, <em class="sig-param">created_date_from=None</em>, <em class="sig-param">updated_date_to=None</em>, <em class="sig-param">updated_date_from=None</em>, <em class="sig-param">expired_date_to=None</em>, <em class="sig-param">expired_date_from=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.reverse_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.reverse_whois" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conducts a reverse WHOIS search</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -559,7 +559,7 @@ list: A list of results</p>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings">
-<code class="descname">set_account_balance_warnings</code><span class="sig-paren">(</span><em>warn_threshold=10</em>, <em>warn_threshold_enabled=True</em>, <em>warn_empty_enabled=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.set_account_balance_warnings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_account_balance_warnings</code><span class="sig-paren">(</span><em class="sig-param">warn_threshold=10</em>, <em class="sig-param">warn_threshold_enabled=True</em>, <em class="sig-param">warn_empty_enabled=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.set_account_balance_warnings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.set_account_balance_warnings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets account settings for balance warnings</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -581,7 +581,7 @@ sent</p></li>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.verify_email">
-<code class="descname">verify_email</code><span class="sig-paren">(</span><em>email_address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.verify_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.verify_email" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">verify_email</code><span class="sig-paren">(</span><em class="sig-param">email_address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.verify_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.verify_email" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns metadata about an email address</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -598,7 +598,7 @@ sent</p></li>
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.whois">
-<code class="descname">whois</code><span class="sig-paren">(</span><em>domain_name</em>, <em>prefer_fresh=False</em>, <em>da=0</em>, <em>ip=True</em>, <em>check_proxy_data=True</em>, <em>thin_whois=False</em>, <em>callback=None</em>, <em>parse=False</em>, <em>registry_raw_text=None</em>, <em>registrar_raw_text=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">whois</code><span class="sig-paren">(</span><em class="sig-param">domain_name</em>, <em class="sig-param">prefer_fresh=False</em>, <em class="sig-param">da=0</em>, <em class="sig-param">ip=True</em>, <em class="sig-param">check_proxy_data=True</em>, <em class="sig-param">thin_whois=False</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">parse=False</em>, <em class="sig-param">registry_raw_text=None</em>, <em class="sig-param">registrar_raw_text=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns parsed WHOIS data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -633,7 +633,7 @@ str: WHOIS data wrapped in JSONP if <code class="docutils literal notranslate"><
 
 <dl class="method">
 <dt id="pywhoisxmlapi.WhoisXMLAPI.whois_history">
-<code class="descname">whois_history</code><span class="sig-paren">(</span><em>domain</em>, <em>since_date=None</em>, <em>created_date_from=None</em>, <em>created_date_to=None</em>, <em>updated_date_from=None</em>, <em>updated_date_to=None</em>, <em>expired_date_from=None</em>, <em>expired_date_to=None</em>, <em>mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois_history" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">whois_history</code><span class="sig-paren">(</span><em class="sig-param">domain</em>, <em class="sig-param">since_date=None</em>, <em class="sig-param">created_date_from=None</em>, <em class="sig-param">created_date_to=None</em>, <em class="sig-param">updated_date_from=None</em>, <em class="sig-param">updated_date_to=None</em>, <em class="sig-param">expired_date_from=None</em>, <em class="sig-param">expired_date_to=None</em>, <em class="sig-param">mode='preview'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPI.whois_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPI.whois_history" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns WHOIS history for a given domains</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -671,13 +671,13 @@ current record</p>
 
 <dl class="exception">
 <dt id="pywhoisxmlapi.WhoisXMLAPIError">
-<em class="property">exception </em><code class="descclassname">pywhoisxmlapi.</code><code class="descname">WhoisXMLAPIError</code><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPIError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPIError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">WhoisXMLAPIError</code><a class="reference internal" href="_modules/pywhoisxmlapi.html#WhoisXMLAPIError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.WhoisXMLAPIError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when an error is returned by WhoisXMLAPI</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pywhoisxmlapi.datetime_to_string">
-<code class="descclassname">pywhoisxmlapi.</code><code class="descname">datetime_to_string</code><span class="sig-paren">(</span><em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#datetime_to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.datetime_to_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">datetime_to_string</code><span class="sig-paren">(</span><em class="sig-param">dt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#datetime_to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.datetime_to_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a datetime object to a human readable string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -690,7 +690,7 @@ current record</p>
 
 <dl class="function">
 <dt id="pywhoisxmlapi.epoch_to_datetime">
-<code class="descclassname">pywhoisxmlapi.</code><code class="descname">epoch_to_datetime</code><span class="sig-paren">(</span><em>epoch_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#epoch_to_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.epoch_to_datetime" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">epoch_to_datetime</code><span class="sig-paren">(</span><em class="sig-param">epoch_seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#epoch_to_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.epoch_to_datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a UNIX epoch timestamp to a python DateTime object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -707,7 +707,7 @@ current record</p>
 
 <dl class="function">
 <dt id="pywhoisxmlapi.flatten_whois">
-<code class="descclassname">pywhoisxmlapi.</code><code class="descname">flatten_whois</code><span class="sig-paren">(</span><em>whois_record</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#flatten_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.flatten_whois" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">flatten_whois</code><span class="sig-paren">(</span><em class="sig-param">whois_record</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#flatten_whois"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.flatten_whois" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flattens a whois record result
 :param whois_record: A WHOIS record
 :type whois_record: dict</p>
@@ -723,7 +723,7 @@ current record</p>
 
 <dl class="function">
 <dt id="pywhoisxmlapi.whois_to_csv">
-<code class="descclassname">pywhoisxmlapi.</code><code class="descname">whois_to_csv</code><span class="sig-paren">(</span><em>whois_results</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#whois_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.whois_to_csv" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pywhoisxmlapi.</code><code class="sig-name descname">whois_to_csv</code><span class="sig-paren">(</span><em class="sig-param">whois_results</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pywhoisxmlapi.html#whois_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pywhoisxmlapi.whois_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns CSV content given a list of WHOIS results</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
