@@ -160,7 +160,7 @@ def _main():
         thin_whois = True
         if arguments["--verbose"]:
             thin_whois = False
-        results = api.whois(arguments["<domain>"][0], thin_whois=thin_whois)
+        results = api.whois(arguments["<domain>"], thin_whois=thin_whois)
 
     # Format output
     if type(results) is dict:
@@ -169,7 +169,7 @@ def _main():
     elif type(results) is list:
         results = "\n".join(results)
     if arguments["--output"]:
-        filename = arguments["--output"][0]
+        filename = arguments["--output"]
         with open(filename, "w", encoding="utf-8", errors="ignore",
                   newline="\n") as output_file:
             output_file.write(results)

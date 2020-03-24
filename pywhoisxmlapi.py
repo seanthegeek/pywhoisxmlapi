@@ -25,39 +25,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License."""
 
-__version__ = "2.1.5"
+__version__ = "2.1.6"
 
 logging.basicConfig(
         format='%(asctime)s [%(levelname)s] %(message)s'
     )
 
 
-def epoch_to_datetime(epoch_seconds):
-    """
-    Converts a UNIX epoch timestamp to a python DateTime object
-
-    Args:
-        epoch_seconds: A UNIX epoch value
-
-    Returns:
-        DateTime: A Python DateTime representation of the epoch value
-
-    """
+def _epoch_to_datetime(epoch_seconds):
     return datetime.fromtimestamp(int(epoch_seconds))
 
 
-def datetime_to_string(dt):
-    """
-    Converts a datetime object to a human readable string
-
-    Args:
-        dt (datetime): The datetime to convert
-
-    Returns:
-
-    str: formatted ``YYYY-MM-DD HH:MM:SS``
-    """
-
+def _datetime_to_string(dt):
     return dt.strftime('%Y-%m-%d %H:%M:%S.%f')
 
 
@@ -241,6 +220,59 @@ class WhoisXMLAPI(object):
 
         return response
 
+    def _common_api_call(self, endpoint,
+                         params,
+                         cost,
+                         results_key,
+                         since_date=None,
+                         created_date_from=None,
+                         created_date_to=None,
+                         updated_date_from=None,
+                         updated_date_to=None,
+                         expired_date_from=None,
+                         expired_date_to=None):
+        if since_date:
+            params["sinceDate"] = since_date
+        if created_date_from:
+            params["createdDateFrom"] = created_date_from
+        if created_date_to:
+            params["createdDateTo"] = created_date_to
+        if updated_date_from:
+            params["updatedDateFrom"] = updated_date_from
+        if updated_date_to:
+            params["updatedDateTo"] = updated_date_to
+        if expired_date_from:
+            params["expiredDateFrom"] = expired_date_from
+        if expired_date_to:
+            params["expiredDateTo"] = expired_date_to
+
+        results = self._request(endpoint, params, post=True)
+
+        if params["mode"] == "preview":
+            results["DRSCreditCost"] = cost
+        elif "records" in results:
+            results = results[results_key]
+
+        return results
+
+    def _transform_api_call(self, transform, endpoint, params):
+        results = []
+        response = self._request(endpoint, params=params)
+
+        _results = response["result"]
+        results += _results
+        while len(_results) >= 300:
+            params["from"] = results[-1]["name"]
+            response = self._request(endpoint, params=params)
+
+            _results = response["result"]
+
+            results += _results
+
+        results = list(map(transform, results))
+
+        return results
+
     def get_account_balances(self):
         """
         Get all account balances
@@ -379,7 +411,7 @@ class WhoisXMLAPI(object):
         structured = response["whoisRecords"]
 
         for result in structured:
-            result["domainFetchedTime"] = epoch_to_datetime(
+            result["domainFetchedTime"] = _epoch_to_datetime(
                 float(result["domainFetchedTime"]) / 1000)
 
         endpoint = "https://www.whoisxmlapi.com/BulkWhoisLookup/" \
@@ -507,28 +539,14 @@ class WhoisXMLAPI(object):
         endpoint = "https://whois-history-api.whoisxmlapi.com/api/v1"
         mode = mode.lower()
         params = dict(domainName=domain, mode=mode)
-        if since_date:
-            params["sinceDate"] = since_date
-        if created_date_from:
-            params["createdDateFrom"] = created_date_from
-        if created_date_to:
-            params["createdDateTo"] = created_date_to
-        if updated_date_from:
-            params["updatedDateFrom"] = updated_date_from
-        if updated_date_to:
-            params["updatedDateTo"] = updated_date_to
-        if expired_date_from:
-            params["expiredDateFrom"] = expired_date_from
-        if expired_date_to:
-            params["expiredDateTo"] = expired_date_to
-
-        results = self._request(endpoint, params, post=True)
-        drs_credit_cost = 50
-
-        if mode == "preview":
-            results["DRSCreditCost"] = drs_credit_cost
-        elif "records" in results:
-            results = results["records"]
+        results = self._common_api_call(endpoint, params, 50, "records",
+                                        since_date=since_date,
+                                        created_date_from=created_date_from,
+                                        created_date_to=created_date_to,
+                                        updated_date_from=updated_date_from,
+                                        updated_date_to=updated_date_to,
+                                        expired_date_from=expired_date_from,
+                                        expired_date_to=expired_date_to)
 
         return results
 
@@ -584,30 +602,14 @@ class WhoisXMLAPI(object):
         if mode not in ["preview", "purchase"]:
             raise ValueError("mode must be preview or purchase")
         params["excludeTerms"] = exclude_terms
-        if since_date:
-            params["sinceDate"] = since_date
-        if created_date_from:
-            params["createdDateFrom"] = created_date_from
-        if created_date_to:
-            params["createdDateTo"] = created_date_to
-        if updated_date_from:
-            params["updatedDateFrom"] = updated_date_from
-        if updated_date_to:
-            params["updatedDateTo"] = updated_date_to
-        if expired_date_from:
-            params["expiredDateFrom"] = expired_date_from
-        if expired_date_to:
-            params["expiredDateTo"] = expired_date_to
-
-        results = self._request(endpoint, params, post=True)
-
-        drs_credit_cost = 10
-
-        if mode == "preview":
-            results["DRSCreditCost"] = drs_credit_cost
-        elif "domainslist" in results:
-            results = results["domainsList"]
-
+        results = self._common_api_call(endpoint, params, 10, "domainsList",
+                                        since_date=since_date,
+                                        created_date_from=created_date_from,
+                                        created_date_to=created_date_to,
+                                        updated_date_from=updated_date_from,
+                                        updated_date_to=updated_date_to,
+                                        expired_date_from=expired_date_from,
+                                        expired_date_to=expired_date_to)
         return results
 
     def registrant_alert(self, terms, exclude_terms=None,
@@ -660,30 +662,15 @@ class WhoisXMLAPI(object):
             raise ValueError("mode must be preview or purchase")
         params["basicSearchTerms"] = dict(include=terms,
                                           exclude=exclude_terms)
-        if since_date:
-            params["sinceDate"] = since_date
-        if created_date_from:
-            params["createdDateFrom"] = created_date_from
-        if created_date_to:
-            params["createdDateTo"] = created_date_to
-        if updated_date_from:
-            params["updatedDateFrom"] = updated_date_from
-        if updated_date_to:
-            params["updatedDateTo"] = updated_date_to
-        if expired_date_from:
-            params["expiredDateFrom"] = expired_date_from
-        if expired_date_to:
-            params["expiredDateTo"] = expired_date_to
 
-        results = self._request(endpoint, params, post=True)
-
-        drs_credit_cost = 10
-
-        if mode == "preview":
-            results["DRSCreditCost"] = drs_credit_cost
-        elif "domainslist" in results:
-            results = results["domainsList"]
-
+        results = self._common_api_call(endpoint, params, 10, "domainsList",
+                                        since_date=since_date,
+                                        created_date_from=created_date_from,
+                                        created_date_to=created_date_to,
+                                        updated_date_from=updated_date_from,
+                                        updated_date_to=updated_date_to,
+                                        expired_date_from=expired_date_from,
+                                        expired_date_to=expired_date_to)
         return results
 
     def dns_lookup(self, domain_name, record_type="_all", callback=None):
@@ -758,29 +745,15 @@ class WhoisXMLAPI(object):
             list: A list of results
         """
         def transform(result):
-            result["first_seen"] = epoch_to_datetime(
+            result["first_seen"] = _epoch_to_datetime(
                 result["first_seen"])
-            result["last_visit"] = epoch_to_datetime(
+            result["last_visit"] = _epoch_to_datetime(
                 result["last_visit"])
             return result
         endpoint = "https://reverse-mx-api.whoisxmlapi.com/api/v1"
-        results = []
         params = dict(mx=mx)
-        response = self._request(endpoint, params=params)
 
-        _results = response["result"]
-        results += _results
-        while len(_results) >= 300:
-            params["from"] = results[-1]["name"]
-            response = self._request(endpoint, params=params)
-
-            _results = response["result"]
-
-            results += _results
-
-        results = list(map(transform, results))
-
-        return results
+        return self._transform_api_call(transform, endpoint, params)
 
     def reverse_ns(self, ns):
         """
@@ -793,29 +766,15 @@ class WhoisXMLAPI(object):
             list: A list of results
         """
         def transform(result):
-            result["first_seen"] = epoch_to_datetime(
+            result["first_seen"] = _epoch_to_datetime(
                 result["first_seen"])
-            result["last_visit"] = epoch_to_datetime(
+            result["last_visit"] = _epoch_to_datetime(
                 result["last_visit"])
             return result
         endpoint = "https://reverse-ns-api.whoisxmlapi.com/api/v1"
-        results = []
         params = dict(ns=ns)
-        response = self._request(endpoint, params=params)
 
-        _results = response["result"]
-        results += _results
-        while len(_results) >= 300:
-            params["from"] = results[-1]["name"]
-            response = self._request(endpoint, params=params)
-
-            _results = response["result"]
-
-            results += _results
-
-        results = list(map(transform, results))
-
-        return results
+        return self._transform_api_call(transform, endpoint, params)
 
     def reverse_ip(self, ip):
         """
@@ -828,29 +787,15 @@ class WhoisXMLAPI(object):
             list: A list of results
         """
         def transform(result):
-            result["first_seen"] = epoch_to_datetime(
+            result["first_seen"] = _epoch_to_datetime(
                 result["first_seen"])
-            result["last_visit"] = epoch_to_datetime(
+            result["last_visit"] = _epoch_to_datetime(
                 result["last_visit"])
             return result
         endpoint = "https://reverse-ip-api.whoisxmlapi.com/api/v1"
-        results = []
         params = dict(ip=ip)
-        response = self._request(endpoint, params=params)
 
-        _results = response["result"]
-        results += _results
-        while len(_results) >= 300:
-            params["from"] = results[-1]["name"]
-            response = self._request(endpoint, params=params)
-
-            _results = response["result"]
-
-            results += _results
-
-        results = list(map(transform, results))
-
-        return results
+        return self._transform_api_call(transform, endpoint, params)
 
     def domain_reputation(self, domain, mode="fast"):
         """

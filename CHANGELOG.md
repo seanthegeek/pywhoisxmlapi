@@ -1,3 +1,9 @@
+2.1.6
+-----
+
+- Fix basic WHOIS lookup on the CLI
+- Remove more duplicated code
+
 2.1.5
 -----
 
