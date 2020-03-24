@@ -187,9 +187,6 @@ class WhoisXMLAPI(object):
             api_key (str): WhoisXMLAPI API key; overridden by the
             ``WHOIS_KEY`` environment variable
         """
-
-        if "WHOIS_KEY" in os.environ:
-            api_key = os.environ["WHOIS_KEY"]
         if "WHOIS_KEY" in os.environ:
             api_key = os.environ["WHOIS_KEY"]
         if api_key is None:

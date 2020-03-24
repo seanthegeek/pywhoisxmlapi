@@ -2,6 +2,8 @@
 -----
 
 - Fix reverse WHOIS preview
+- Simplify bulk the bulk WHOIS lookup CLI
+- Remove duplicated code
 
 2.1.4
 -----
