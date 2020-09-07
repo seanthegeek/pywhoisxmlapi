@@ -45,8 +45,8 @@ CLI help
      -d --debug                   Enable debug output
      <input_file>                 A path to a file containing one domain per line
      -o --output=<output_file>    Output to a file with this file name; the file extension is added automatically
-     -p --purchase                Purchase the results with a Domain Research Suite (DRS) credit
-     --since=<since>              Only include results since this date YYY-MM0DD format
+     -p --purchase                Purchase the results with Domain Research Suite (DRS) credits
+     --since=<since>              Only include results since this date YYY-MM-DD format
      --days-back=<days_back>      Search back through this number of days (12 maximum)
      --historic                   Include historic results
      --csv                        Output in CSV format
