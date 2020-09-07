@@ -1,3 +1,9 @@
+2.1.7
+-----
+
+- Fix `--output` CLI option
+- Fix `history` CLI command
+
 2.1.6
 -----
 
